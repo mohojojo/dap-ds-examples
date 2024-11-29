@@ -1,0 +1,26 @@
+<h2>Template driven form</h2>
+
+<form #form="ngForm">
+    <dap-ds-stack>
+        <dap-ds-input
+            [(ngModel)]="formData.firstName"
+            required
+            label="First Name:"
+            name="firstName"
+        ></dap-ds-input>
+        <dap-ds-input
+            [(ngModel)]="formData.lastName"
+            required
+            label="Last Name:"
+            name="lastName"
+        ></dap-ds-input>
+        <dap-ds-input
+        [(ngModel)]="formData.email"
+            required
+            label="Email:"
+            name="email"
+        ></dap-ds-input>
+    </dap-ds-stack>
+
+    <dap-ds-button (click)="onSubmit()">Submit</dap-ds-button>
+</form>

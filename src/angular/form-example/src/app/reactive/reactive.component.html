@@ -1,0 +1,23 @@
+<h2>Reactive form</h2>
+
+<form [formGroup]="myForm">
+    <dap-ds-stack>
+        <dap-ds-input
+            formControlName="firstName"
+            required
+            label="First Name:"
+        ></dap-ds-input>
+        <dap-ds-input
+            formControlName="lastName"
+            required
+            label="Last Name:"
+        ></dap-ds-input>
+        <dap-ds-input
+            formControlName="email"
+            required
+            label="Email:"
+        ></dap-ds-input>
+    </dap-ds-stack>
+
+    <dap-ds-button (click)="onSubmit()">Submit</dap-ds-button>
+</form>
