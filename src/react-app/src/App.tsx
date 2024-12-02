@@ -31,6 +31,16 @@ function App() {
   
   const onSubmit = (data: any) => {
     console.log('data', data)
+    if (window.showDapSnackbar) {
+      window.showDapSnackbar('Gratulálunk! Minden mező helyes!', {
+        duration: 4500,
+        alertType: 'successful',
+        actions: [
+          { href: 'https://sg.hu', text: 'SG' },
+          { href: 'https://index.hu', text: 'Index' },
+        ],
+      })
+    }
   }
   
   return (
@@ -263,14 +273,6 @@ function App() {
           />
           <DapDSButtonReact htmlType="submit">Küldés</DapDSButtonReact>
         </DapDSStackReact>
-        {/* <DapDSButtonReact onClick={() => window.showDapSnackbar('Message with default type', {
-          duration: 4500,
-          alertType: 'default',
-          actions: [
-            { href: 'https://sg.hu', text: 'SG' },
-            { href: 'https://index.hu', text: 'Index' },
-          ],
-        })}>Set value</DapDSButtonReact> */}
       </form>
     </div>
   );
