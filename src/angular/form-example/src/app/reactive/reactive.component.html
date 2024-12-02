@@ -3,21 +3,61 @@
 <form [formGroup]="myForm">
     <dap-ds-stack>
         <dap-ds-input
-            formControlName="firstName"
+            formControlName="fullName"
             required
-            label="First Name:"
+            [feedback]="getFullNameValidation()"
+            feedbackType="negative"
+            label="Teljes név"
         ></dap-ds-input>
-        <dap-ds-input
-            formControlName="lastName"
-            required
-            label="Last Name:"
-        ></dap-ds-input>
+        <dap-ds-select
+          formControlName="title"
+          label="Megnevezés"
+          required
+          [feedback]="getTitleValidation()"
+          feedbackType="negative"
+        >
+          <dap-ds-option-item value="mr">Úr</dap-ds-option-item>
+          <dap-ds-option-item value="mrs">Hölgy</dap-ds-option-item>
+          <dap-ds-option-item value="miss">Kisasszony</dap-ds-option-item>
+        </dap-ds-select>
         <dap-ds-input
             formControlName="email"
             required
-            label="Email:"
+            label="E-mail cím"
+            [feedback]="getEmailValidation()"
         ></dap-ds-input>
+        <dap-ds-datepicker
+            formControlName="birthDate"
+            required
+            label="Születési dátum"
+            description="Add meg a születési dátumod!"
+        ></dap-ds-datepicker>
+        <dap-ds-combobox
+          formControlName="product"
+          label="Termék megnevezés"
+          required
+          feedbackType="negative"
+          placeholder="Válassz egy terméket"
+        >
+          <dap-ds-option-item></dap-ds-option-item>
+        </dap-ds-combobox>
+        <dap-ds-input
+            formControlName="subject"
+            label="Tárgy"
+            optional
+            optionalLabel="(Nem kötelező)"
+        ></dap-ds-input>
+        <dap-ds-textarea
+            formControlName="message"
+            required
+            label="Üzenet"
+        ></dap-ds-textarea>
+        <dap-ds-checkbox
+            formControlName="tnc"
+            required
+            label="Megnyitottam, elolvastam és elfogadom az Adatkezelési tájékoztatót."
+        ></dap-ds-checkbox>
     </dap-ds-stack>
 
-    <dap-ds-button (click)="onSubmit()">Submit</dap-ds-button>
+    <dap-ds-button (click)="onSubmit()">Küldés</dap-ds-button>
 </form>
