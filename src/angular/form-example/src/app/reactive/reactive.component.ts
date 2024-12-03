@@ -6,6 +6,9 @@ import { DapDSCheckboxValueAccessorDirective } from '../directives/dap-ds-checkb
 import { DapDSDatePickerValueAccessorDirective } from '../directives/dap-ds-datepicker.directive';
 import { DapDSTextareaValueAccessorDirective } from '../directives/dap-ds-textarea.directive'
 import { DapDSSelectValueAccessorDirective } from '../directives/dap-ds-select.directive';
+import { DapDSComboboxAccessorDirective } from '../directives/dap-ds-combobox.directive';
+import { ProductService } from '../service/product.service';
+import { Product } from '../model/product';
 
 @Component({
   selector: 'app-reactive',
@@ -15,17 +18,21 @@ import { DapDSSelectValueAccessorDirective } from '../directives/dap-ds-select.d
     DapDSCheckboxValueAccessorDirective,
     DapDSDatePickerValueAccessorDirective,
     DapDSTextareaValueAccessorDirective,
-    DapDSSelectValueAccessorDirective
+    DapDSSelectValueAccessorDirective,
+    DapDSComboboxAccessorDirective
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './reactive.component.html',
   styleUrl: './reactive.component.scss'
 })
 export class ReactiveComponent {
+  isFormSubmitted = false
   myForm: FormGroup;
+  products: Product[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
+    private productService: ProductService
   ) {
     this.myForm = this.formBuilder.group({
       fullName: ['', Validators.required],
@@ -35,20 +42,22 @@ export class ReactiveComponent {
       product: ['', Validators.required],
       subject: [''],
       message: ['', Validators.required],
-      tnc: [false, Validators.required],
+      tnc: [false, Validators.requiredTrue],
     });
   }
 
-  // getProducts(productFilter: string): void {
-  //   if (productFilter) {
-  //     this.productService.getProducts(productFilter).subscribe(data => {
-  //       this.myData = data;
-  //     });
-  //   }
-  // }
+  getProducts(productFilter: string): void {
+    if (productFilter) {
+      this.productService.getProducts(productFilter).subscribe(searchResult => {
+        if (searchResult?.products) {
+          this.products = searchResult?.products;
+        }
+      });
+    }
+  }
 
   validateRequire(formControlName: string, requireMessage: string): string {
-    if (formControlName && requireMessage) {
+    if (this.isFormSubmitted && formControlName && requireMessage) {
       const control = this.myForm.get(formControlName);
       if (control?.hasError('required')) {
         return requireMessage;
@@ -65,6 +74,10 @@ export class ReactiveComponent {
     return this.validateRequire('email', 'Add meg az e-mail címed!');
   }
 
+  getProductValidation(): string {
+    return this.validateRequire('product', 'Válassz egy terméket!');
+  }
+
   getTitleValidation(): string {
     return this.validateRequire('title', 'Válassz megnevezést!');
   }
@@ -73,9 +86,28 @@ export class ReactiveComponent {
     return this.validateRequire('birthDate', 'Add meg a születési dátumod!');
   }
 
+  getMessageValidation(): string {
+    return this.validateRequire('message', 'Írd be az üzeneted!');
+  }
+
+  getTncValidation(): string {
+    return this.validateRequire('tnc', 'Fogadd el az Adatkezelési tájékoztatót!');
+  }
+
   onSubmit() {
     if (this.myForm.valid) {
+      if (window.showDapSnackbar) {
+        window.showDapSnackbar('Gratulálunk! Minden mező helyes!', {
+          duration: 4500,
+          alertType: 'successful',
+          actions: [
+            { href: 'https://sg.hu', text: 'SG' },
+            { href: 'https://index.hu', text: 'Index' },
+          ],
+        });
+      }
       console.log(this.myForm.value);
     }
+    this.isFormSubmitted = true;
   }
 }
