@@ -46,6 +46,13 @@ export class ReactiveComponent {
     });
   }
 
+  handleProduct($e: Event): void {
+    console.log('* handleProduct *');
+    console.log(Math.random());
+    console.log(this.myForm.get('product')?.value);
+    console.log($e)
+  }
+
   getProducts(productFilter: string): void {
     if (productFilter) {
       this.productService.getProducts(productFilter).subscribe(searchResult => {

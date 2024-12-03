@@ -41,6 +41,8 @@ export class DapDSComboboxAccessorDirective implements ControlValueAccessor {
   @HostListener('dds-change', ['$event.target.value'])
   handleInput(value: any): void {
     this.onChange(value);
+    console.log(`@HostListener('dds-change'`);
+    console.log(value)
   }
 
   @HostListener('blur')
