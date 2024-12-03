@@ -2,16 +2,24 @@
 
 <form #form="ngForm">
     <dap-ds-stack>
-
       <dap-ds-input
           [(ngModel)]="formData.fullName"
+          #fullNameModel="ngModel"
           name="fullName"
           required
           feedbackType="negative"
           label="Teljes név"
       ></dap-ds-input>
+      @if (submitted || fullNameModel.touched) {
+        @if (fullNameModel.errors?.['required']) {
+          <p class="error">
+            Add meg a teljes neved!
+          </p>
+        }
+      }
       <dap-ds-select
         [(ngModel)]="formData.title"
+        #titleModel="ngModel"
         name="title"
         label="Megnevezés"
         required

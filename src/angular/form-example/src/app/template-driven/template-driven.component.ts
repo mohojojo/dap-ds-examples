@@ -22,6 +22,8 @@ import { DapDSSelectValueAccessorDirective } from '../directives/dap-ds-select.d
   styleUrl: './template-driven.component.scss'
 })
 export class TemplateDrivenComponent {
+  submitted = false;
+
   formData = {
     fullName: '',
     title: '',
@@ -34,5 +36,6 @@ export class TemplateDrivenComponent {
 
   onSubmit() {
     console.log('Form Data:', this.formData);
+    this.submitted = true;
   }
 }
