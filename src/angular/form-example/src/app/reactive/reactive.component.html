@@ -39,12 +39,15 @@
           formControlName="product"
           label="Termék megnevezés"
           required
+          sync
           [feedback]="getProductValidation()"
           feedbackType="negative"
           getProductValidation
           placeholder="Válassz egy terméket"
         >
-          <dap-ds-option-item></dap-ds-option-item>
+          @for (product of products; track product.id) {
+            <dap-ds-option-item value="{ product.id }" label="{ product.title }">{{ product.title }}</dap-ds-option-item>
+          }
         </dap-ds-combobox>
         <dap-ds-input
             formControlName="subject"

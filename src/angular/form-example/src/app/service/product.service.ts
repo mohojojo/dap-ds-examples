@@ -14,13 +14,13 @@ export class ProductService {
   constructor(private http: HttpClient) {}
 
   getProducts(filter: string): Observable<SearchResult | undefined> {
-    const cacheKey = filter.trim().toLowerCase();
+    const cacheKey = filter;
 
     if (this.cache.has(cacheKey)) {
       return of(this.cache.get(cacheKey));
     }
 
-    const url = `${this.baseUrl}?q=${encodeURIComponent(filter)}`;
+    const url = `${this.baseUrl}?q=${filter}`;
 
     return this.http.get<SearchResult>(url).pipe(
       tap((response) => {
