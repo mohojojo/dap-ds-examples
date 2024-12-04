@@ -54,7 +54,6 @@ function App() {
               <DapDSInputReact
                 id="name"
                 label="Teljes név"
-                required
                 name="name"
                 value={value}
                 feedback={errors?.name?.message?.toString()}
@@ -78,7 +77,6 @@ function App() {
               <DapDSSelectReact
                 id="prefix"
                 label="Megnevezés"
-                required
                 name="prefix"
                 value={value}
                 feedback={errors?.prefix?.message?.toString()}
@@ -106,7 +104,6 @@ function App() {
               <DapDSInputReact
                 id="email"
                 label="E-mail cím"
-                required
                 name="email"
                 value={value}
                 type="email"
@@ -136,7 +133,6 @@ function App() {
                 id="datepicker"
                 label="Születési dátum"
                 description="Add meg a születési dátumod!"
-                required
                 name="datepicker"
                 value={value}
                 feedback={errors?.datepicker?.message?.toString()}
@@ -176,8 +172,7 @@ function App() {
             render={({ field: { value } }) => (
               <DapDSComboboxReact
                 id="product"
-                label="Megnevezés"
-                required
+                label="Kedvenc terméked"
                 name="product"
                 value={value}
                 feedback={errors?.product?.message?.toString()}
@@ -228,7 +223,6 @@ function App() {
               <DapDSTextareaReact
                 id="message"
                 label="Üzenet"
-                required
                 name="message"
                 value={value}
                 feedback={errors?.message?.message?.toString()}
@@ -252,7 +246,6 @@ function App() {
               <DapDSCheckboxReact
                 id="consent"
                 label="Megnyitottam, elolvastam és elfogadom az Adatkezelési tájékoztatót."
-                required
                 name="consent"
                 checked={value}
                 feedback={errors?.consent?.message?.toString()}

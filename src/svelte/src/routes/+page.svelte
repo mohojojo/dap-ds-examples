@@ -1,12 +1,14 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 		import dayjs from 'dayjs'
+		import { products } from '../store'
 
     type FormErrors = {
         name?: string;
 				prefix?: string;
         email?: string;
 				birthdate?: string;
+				product?: string;
 				subject?: string;
         message?: string;
 				consent?: string
@@ -19,6 +21,7 @@
     let name = '';
 		let prefix = '';
 		let email = '';
+		let product = '';
 		let birthday = '';
 		let message = '';
 		let subject = '';
@@ -34,15 +37,25 @@
 				if (email && !email.match(/[^@\s]+@[^@\s]+\.[^@\s]+/)) {
 						errors.email = 'Hibás email cím!';
 				}
-				if(!birthday) errors.birthdate = 'Add meg a születési dátumod!';
+				if (!product) errors.product = 'Válassz kedvenc terméket!'
+				if (!birthday) errors.birthdate = 'Add meg a születési dátumod!';
 				if (!message) errors.message = 'Add meg az üzeneted!';
 				if (!consent) errors.consent = 'Fogadd el az Adatkezelési tájékoztatót!';
     }
 
+
+		const getProducts = async(filter: string) => {
+			const response = await fetch(`https://dummyjson.com/products/search?q=${filter}`)
+			const json = await response.json()
+
+
+			products.set(json.products.filter((item: any) => item.title.toLowerCase().startsWith(filter.toLowerCase())))
+  	}
+
     function handleSubmit() {
         validate();
         if (Object.keys(errors).length === 0) {
-            window.showDapSnackbar('Gratulálunk! Minden mező helyes!', {
+            window.showDapSnackbar && window.showDapSnackbar('Gratulálunk! Minden mező helyes!', {
                 duration: 4500,
                 alertType: 'successful',
                 actions: [
@@ -56,12 +69,12 @@
 </script>
 
 <dap-ds-snackbar></dap-ds-snackbar>
-<form on:submit|preventDefault={handleSubmit}>
+<form onsubmit={handleSubmit}>
     <dap-ds-stack>
         <dap-ds-input
 						label="Teljes név"
             value={name}
-            on:dds-input={(event) => name = event.detail.value}
+            ondds-input={(event: any) => name = event.detail.value}
             feedback={errors.name}
             feedbackType="negative"
         >
@@ -71,7 +84,7 @@
 					value={prefix}
 					feedback={errors.prefix}
 					feedbackType="negative"
-					on:dds-change={e => prefix = e.detail.value}>
+					ondds-change={(e: any) => prefix = e.detail.value}>
 						<dap-ds-option-item value="mr">Úr</dap-ds-option-item>
 						<dap-ds-option-item value="mrs">Hölgy</dap-ds-option-item>
 						<dap-ds-option-item value="miss">Kisasszony</dap-ds-option-item>
@@ -79,7 +92,7 @@
 				<dap-ds-input
 					label="E-mail cím"
 					value={email}
-					on:dds-input={(event) => email = event.detail.value}
+					ondds-input={(event: any) => email = event.detail.value}
 					feedback={errors.email}
 					feedbackType="negative"
 				>
@@ -90,11 +103,11 @@
 					value={birthday}
 					feedback={errors.birthdate}
 					feedbackType='negative'
-					on:dds-change={(e) => {
+					ondds-change={(e: any) => {
 						console.log(e)
 						birthday = e.detail.value
 					}}
-					on:dds-invalid-date={(e) => {
+					ondds-invalid-date={(e: any) => {
 						console.log(e)
 						if (e.detail.type === 'invalid') {
 							errors.birthdate = `Érvénytelen dátum: ${dayjs.Ls[dayjs.locale()].formats.L}`
@@ -104,30 +117,51 @@
 							errors.birthdate = 'Nem választható dátum!'
 						}
 					}}
-					on:dds-valid-date={(e) => {
+					ondds-valid-date={(e: any) => {
 						console.log(e)
 						errors.birthdate = ''
 					}}
 				>
 				</dap-ds-datepicker>
+				<dap-ds-combobox
+					id="product"
+					label="Kedvenc terméked"
+					name="product"
+					value={product}
+					feedback={errors?.product}
+					feedbackType="negative"
+					ondds-change={(e: any) => {
+						console.log(e)
+						product = e.detail.value
+					}}
+					ondds-input={(e: any) => {
+						getProducts(e.detail.input)
+					}}
+					sync
+					placeholder="Válassz egy terméket">
+					{#each $products as product}
+						<dap-ds-option-item key={product.id} value={product.id} label={product.title}>
+							{product.title}
+						</dap-ds-option-item>
+					{/each}
+				</dap-ds-combobox>
 				<dap-ds-input
 					label="Tárgy"
 					value={subject}
 					optional
 					optionalLabel="(Nem kötelező)"
-					on:dds-change={(event) => subject = event.detail.value}
+					ondds-change={(event: any) => subject = event.detail.value}
 				></dap-ds-input>
 				<dap-ds-textarea
 					label="Üzenet"
 					value={message}
-					on:dds-change={(event) => message = event.detail.value}
+					ondds-change={(event: any) => message = event.detail.value}
 					feedback={errors.message}
 					feedbackType="negative"
 				></dap-ds-textarea>
 				<dap-ds-checkbox
 					label="Megnyitottam, elolvastam és elfogadom az Adatkezelési tájékoztatót."
-					checked={consent}
-					on:dds-change={(e) => consent = e.detail.checked}
+					ondds-change={(e: any) => consent = e.detail.checked}
 					feedback={errors?.consent}
 					feedbackType="negative"
 				></dap-ds-checkbox>

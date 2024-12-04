@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "../svelte/src/store.ts"  ]
 }
