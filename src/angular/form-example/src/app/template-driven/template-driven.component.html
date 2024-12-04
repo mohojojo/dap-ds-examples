@@ -29,21 +29,42 @@
         <dap-ds-option-item value="mrs">Hölgy</dap-ds-option-item>
         <dap-ds-option-item value="miss">Kisasszony</dap-ds-option-item>
       </dap-ds-select>
-
+      @if (submitted || titleModel.touched) {
+        @if (titleModel.errors?.['required']) {
+          <p class="error">
+            Válassz megnevezést!
+          </p>
+        }
+      }
       <dap-ds-input
           [(ngModel)]="formData.email"
+          #emailModel="ngModel"
           name="email"
           required
           label="E-mail cím"
       ></dap-ds-input>
+      @if (submitted || emailModel.touched) {
+        @if (emailModel.errors?.['required']) {
+          <p class="error">
+            Add meg az e-mail címed!
+          </p>
+        }
+      }
       <dap-ds-datepicker
           [(ngModel)]="formData.birthDate"
+          #birthDateModel="ngModel"
           name="birthDate"
           required
           label="Születési dátum"
           description="Add meg a születési dátumod!"
       ></dap-ds-datepicker>
-
+      @if (submitted || birthDateModel.touched) {
+        @if (birthDateModel.errors?.['required']) {
+          <p class="error">
+            Add meg a születési dátumod!
+          </p>
+        }
+      }
       <dap-ds-input
           [(ngModel)]="formData.subject"
           name="subject"
@@ -53,17 +74,32 @@
       ></dap-ds-input>
       <dap-ds-textarea
           [(ngModel)]="formData.message"
+          #messageModel="ngModel"
           name="message"
           required
           label="Üzenet"
       ></dap-ds-textarea>
+      @if (submitted || messageModel.touched) {
+        @if (messageModel.errors?.['required']) {
+          <p class="error">
+            Írd be az üzeneted!
+          </p>
+        }
+      }
       <dap-ds-checkbox
           [(ngModel)]="formData.tnc"
+          #tncModel="ngModel"
           name="tnc"
           required
           label="Megnyitottam, elolvastam és elfogadom az Adatkezelési tájékoztatót."
       ></dap-ds-checkbox>
-
+      @if (submitted || tncModel.touched) {
+        @if (!formData.tnc) {
+          <p class="error">
+            Fogadd el az Adatkezelési tájékoztatót!
+          </p>
+        }
+      }
     </dap-ds-stack>
 
     <dap-ds-button (click)="onSubmit()">Submit</dap-ds-button>
