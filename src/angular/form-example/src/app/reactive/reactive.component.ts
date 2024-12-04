@@ -81,7 +81,7 @@ export class ReactiveComponent {
   validateRequireTrue(formControlName: string, requireMessage: string): string {
     if (this.isFormSubmitted && formControlName && requireMessage) {
       const control = this.myForm.get(formControlName);
-      if (control?.hasError('requiredTrue')) {
+      if (!control?.value) {
         return requireMessage;
       }
     }
@@ -130,20 +130,7 @@ export class ReactiveComponent {
   }
 
   onSubmit() {
-    console.log(this.myForm.value);
-    // if (this.myForm.valid) {
-    //   if (window.showDapSnackbar) {
-    //     window.showDapSnackbar('Gratulálunk! Minden mező helyes!', {
-    //       duration: 4500,
-    //       alertType: 'successful',
-    //       actions: [
-    //         { href: 'https://sg.hu', text: 'SG' },
-    //         { href: 'https://index.hu', text: 'Index' },
-    //       ],
-    //     });
-    //   }
-    //   console.log(this.myForm.value);
-    // }
     this.isFormSubmitted = true;
+    console.log(this.myForm.value);
   }
 }
