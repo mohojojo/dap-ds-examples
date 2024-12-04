@@ -88,12 +88,25 @@ export class ReactiveComponent {
     return '';
   }
 
+  validateEmail(formControlName: string, requireMessage: string): string {
+    if (this.isFormSubmitted && formControlName && requireMessage) {
+      const control = this.myForm.get(formControlName);
+      if (control?.hasError('required')) {
+        return requireMessage;
+      }
+      if (control?.hasError('email')) {
+        return 'Az e-mail cím formátuma helytelen!';
+      }
+    }
+    return '';
+  }
+
   getFullNameValidation(): string {
     return this.validateRequire('fullName', 'Add meg a teljes neved!');
   }
 
   getEmailValidation(): string {
-    return this.validateRequire('email', 'Add meg az e-mail címed!');
+    return this.validateEmail('email', 'Add meg az e-mail címed!');
   }
 
   getProductValidation(): string {
