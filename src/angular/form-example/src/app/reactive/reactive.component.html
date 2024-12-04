@@ -28,8 +28,10 @@
             feedbackType="negative"
         ></dap-ds-input>
         <dap-ds-datepicker
+            appDatepickerAccessor
             formControlName="birthDate"
             [feedback]="getBirthDateValidation()"
+            (dds-change)="onDateChange(date)"
             feedbackType="negative"
             required
             label="Születési dátum"

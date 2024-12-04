@@ -3,7 +3,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DapDSInputValueAccessorDirective } from '../directives/dap-ds-input.directive';
 import { DapDSCheckboxValueAccessorDirective } from '../directives/dap-ds-checkbox.directive';
-import { DapDSDatePickerValueAccessorDirective } from '../directives/dap-ds-datepicker.directive';
+import { DapDSDatePickerExtValueAccDirective } from '../directives/dap-ds-datepicker-ext.directive';
 import { DapDSTextareaValueAccessorDirective } from '../directives/dap-ds-textarea.directive'
 import { DapDSSelectValueAccessorDirective } from '../directives/dap-ds-select.directive';
 import { DapDSComboboxAccessorDirective } from '../directives/dap-ds-combobox.directive';
@@ -17,7 +17,7 @@ import { debounceTime } from 'rxjs';
     ReactiveFormsModule,
     DapDSInputValueAccessorDirective,
     DapDSCheckboxValueAccessorDirective,
-    DapDSDatePickerValueAccessorDirective,
+    DapDSDatePickerExtValueAccDirective,
     DapDSTextareaValueAccessorDirective,
     DapDSSelectValueAccessorDirective,
     DapDSComboboxAccessorDirective
@@ -76,6 +76,10 @@ export class ReactiveComponent {
       }
     }
     return '';
+  }
+
+  onDateChange(date: string) {
+    console.log('Date changed:', date);
   }
 
   getFullNameValidation(): string {
