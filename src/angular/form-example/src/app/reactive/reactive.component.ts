@@ -9,6 +9,7 @@ import { DapDSSelectValueAccessorDirective } from '../directives/dap-ds-select.d
 import { DapDSComboboxAccessorDirective } from '../directives/dap-ds-combobox.directive';
 import { ProductService } from '../service/product.service';
 import { Product } from '../model/product';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-reactive',
@@ -44,12 +45,16 @@ export class ReactiveComponent {
       message: ['', Validators.required],
       tnc: [false, Validators.requiredTrue],
     });
+
+    this.myForm.get('product')?.valueChanges.pipe(
+      debounceTime(300)
+    ).subscribe((value) => {
+      console.log('Debounced value changed:', value);
+      this.getProducts(value);
+    });
   }
 
-  handleProduct($e: Event): void {
-    console.log('* handleProduct *');
-    console.log(Math.random());
-    console.log(this.myForm.get('product')?.value);
+  handleProductSearch($e: Event): void {
     console.log($e)
   }
 

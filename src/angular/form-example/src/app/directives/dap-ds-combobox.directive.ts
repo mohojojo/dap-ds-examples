@@ -38,11 +38,10 @@ export class DapDSComboboxAccessorDirective implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  @HostListener('dds-change', ['$event.target.value'])
+  @HostListener('dds-input', ['$event.detail.input'])
   handleInput(value: any): void {
+    this.renderer.setProperty(this.el.nativeElement, 'value', value);
     this.onChange(value);
-    console.log(`@HostListener('dds-change'`);
-    console.log(value)
   }
 
   @HostListener('blur')

@@ -46,7 +46,7 @@
           placeholder="Válassz egy terméket"
         >
           @for (product of products; track product.id) {
-            <dap-ds-option-item value="{ product.id }" label="{ product.title }">{{ product.title }}</dap-ds-option-item>
+            <dap-ds-option-item value="{{ product.id }}" label="{{ product.title }}">{{ product.title }}</dap-ds-option-item>
           }
         </dap-ds-combobox>
         <dap-ds-input
