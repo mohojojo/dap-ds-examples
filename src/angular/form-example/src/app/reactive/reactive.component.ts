@@ -3,7 +3,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DapDSInputValueAccessorDirective } from '../directives/dap-ds-input.directive';
 import { DapDSCheckboxValueAccessorDirective } from '../directives/dap-ds-checkbox.directive';
-import { DapDSDatePickerExtValueAccDirective } from '../directives/dap-ds-datepicker-ext.directive';
+import { DapDSDatePickerValueAccessorDirective } from '../directives/dap-ds-datepicker.directive';
 import { DapDSTextareaValueAccessorDirective } from '../directives/dap-ds-textarea.directive'
 import { DapDSSelectValueAccessorDirective } from '../directives/dap-ds-select.directive';
 import { DapDSComboboxAccessorDirective } from '../directives/dap-ds-combobox.directive';
@@ -17,7 +17,7 @@ import { debounceTime } from 'rxjs';
     ReactiveFormsModule,
     DapDSInputValueAccessorDirective,
     DapDSCheckboxValueAccessorDirective,
-    DapDSDatePickerExtValueAccDirective,
+    DapDSDatePickerValueAccessorDirective,
     DapDSTextareaValueAccessorDirective,
     DapDSSelectValueAccessorDirective,
     DapDSComboboxAccessorDirective
@@ -78,8 +78,14 @@ export class ReactiveComponent {
     return '';
   }
 
-  onDateChange(date: string) {
-    console.log('Date changed:', date);
+  validateRequireTrue(formControlName: string, requireMessage: string): string {
+    if (this.isFormSubmitted && formControlName && requireMessage) {
+      const control = this.myForm.get(formControlName);
+      if (control?.hasError('requiredTrue')) {
+        return requireMessage;
+      }
+    }
+    return '';
   }
 
   getFullNameValidation(): string {
@@ -107,23 +113,24 @@ export class ReactiveComponent {
   }
 
   getTncValidation(): string {
-    return this.validateRequire('tnc', 'Fogadd el az Adatkezelési tájékoztatót!');
+    return this.validateRequireTrue('tnc', 'Fogadd el az Adatkezelési tájékoztatót!');
   }
 
   onSubmit() {
-    if (this.myForm.valid) {
-      if (window.showDapSnackbar) {
-        window.showDapSnackbar('Gratulálunk! Minden mező helyes!', {
-          duration: 4500,
-          alertType: 'successful',
-          actions: [
-            { href: 'https://sg.hu', text: 'SG' },
-            { href: 'https://index.hu', text: 'Index' },
-          ],
-        });
-      }
-      console.log(this.myForm.value);
-    }
+    console.log(this.myForm.value);
+    // if (this.myForm.valid) {
+    //   if (window.showDapSnackbar) {
+    //     window.showDapSnackbar('Gratulálunk! Minden mező helyes!', {
+    //       duration: 4500,
+    //       alertType: 'successful',
+    //       actions: [
+    //         { href: 'https://sg.hu', text: 'SG' },
+    //         { href: 'https://index.hu', text: 'Index' },
+    //       ],
+    //     });
+    //   }
+    //   console.log(this.myForm.value);
+    // }
     this.isFormSubmitted = true;
   }
 }

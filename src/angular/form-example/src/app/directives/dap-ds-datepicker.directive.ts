@@ -11,16 +11,16 @@ import {
 } from '@angular/forms';
 
 @Directive({
-  selector: 'dap-ds-checkbox[formControlName], dap-ds-checkbox[formControl], dap-ds-checkbox[ngModel]',
+  selector: 'dap-ds-datepicker[formControlName], dap-ds-datepicker[formControl], dap-ds-datepicker[ngModel]',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DapDSCheckboxValueAccessorDirective),
+      useExisting: forwardRef(() => DapDSDatePickerValueAccessorDirective),
       multi: true,
     },
   ],
 })
-export class DapDSCheckboxValueAccessorDirective implements ControlValueAccessor {
+export class DapDSDatePickerValueAccessorDirective implements ControlValueAccessor {
   private onChange = (value: any) => {};
   private onTouched = () => {};
 
@@ -38,12 +38,9 @@ export class DapDSCheckboxValueAccessorDirective implements ControlValueAccessor
     this.onTouched = fn;
   }
 
-  @HostListener('dds-change', ['$event.detail.checked'])
+  @HostListener('dds-change', ['$event.target.value'])
   handleInput(value: any): void {
     this.onChange(value);
-    console.log(`checkbox @HostListener('dds-change', ['$event.detail.checked'])`);
-    console.log(value);
-    this.renderer.setProperty(this.el.nativeElement, 'value', value);
   }
 
   @HostListener('blur')
