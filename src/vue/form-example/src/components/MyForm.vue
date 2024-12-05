@@ -41,6 +41,7 @@
         <dap-ds-combobox
           v-model="formData.product"
           :feedback="validateProduct()"
+          @dds-input="onProductSearchInput"
           label="Termék megnevezés"
           required
           sync
@@ -52,7 +53,7 @@
             :key="product.id"
             :value="product.id"
             :label="product.title"
-          >{{ products.title }}</dap-ds-option-item>
+          >{{ product.title }}</dap-ds-option-item>
         </dap-ds-combobox>
         <dap-ds-input
           v-model="formData.subject"
@@ -82,6 +83,7 @@
 
 <script lang="ts">
 type FormEvent = { detail: { value: string; }; } | undefined;
+type ProductSearchEvent = { detail: { input: string; }; } | undefined;
 
 type Product = {
   id: number;
@@ -101,6 +103,7 @@ type SearchResult = {
 export default {
   data() {
     return {
+      timeOutId: 0,
       submitted: false,
       products: [] as Product[],
       searchResult: {} as SearchResult,
@@ -117,6 +120,11 @@ export default {
     }
   },
   methods: {
+    getProducts: async(filter: string) => {
+      const response = await fetch(`https://dummyjson.com/products/search?q=${filter}`)
+      const json = await response.json()
+      return json.products.filter((item: { title: string; }) => item.title.toLowerCase().startsWith(filter.toLowerCase()))
+    },
     handleSubmit() {
       this.submitted = true;
       console.log('Form Data:', this.formData);
@@ -125,6 +133,17 @@ export default {
       console.log('onTitleChange');
       if (e?.detail?.value) {
         console.log(e.detail.value);
+      }
+    },
+    onProductSearchInput(e: ProductSearchEvent) {
+      console.log('onTitleChange');
+      const productFilter = e?.detail?.input;
+      if (productFilter) {
+        clearTimeout(this.timeOutId);
+        this.timeOutId = setTimeout(() => {
+          this.getProducts(productFilter)
+            .then((data) => console.log(data))
+        }, 300);
       }
     },
     validateFullName() {
