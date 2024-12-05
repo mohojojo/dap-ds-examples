@@ -41,12 +41,18 @@
           #emailModel="ngModel"
           name="email"
           required
+          email
           label="E-mail cím"
       ></dap-ds-input>
       @if (submitted || emailModel.touched) {
-        @if (emailModel.errors?.['required']) {
+        @if (emailModel.hasError('required')) {
           <p class="error">
             Add meg az e-mail címed!
+          </p>
+        }
+        @if (emailModel.hasError('email')) {
+          <p class="error">
+            Az e-mail cím formátuma helytelen!
           </p>
         }
       }
