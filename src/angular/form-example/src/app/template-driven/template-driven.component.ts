@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core'
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { DapDSInputValueAccessorDirective } from '../directives/dap-ds-input.directive'
-import { FormsModule, NgModel } from '@angular/forms'
+import { FormsModule, NgForm, NgModel } from '@angular/forms'
 import { DapDSCheckboxValueAccessorDirective } from '../directives/dap-ds-checkbox.directive'
 import { DapDSDatePickerValueAccessorDirective } from '../directives/dap-ds-datepicker.directive'
 import { DapDSTextareaValueAccessorDirective } from '../directives/dap-ds-textarea.directive'
@@ -29,6 +29,8 @@ import { DapDSComboboxAccessorDirective } from '../directives/dap-ds-combobox.di
 export class TemplateDrivenComponent {
   submitted = false
   products: Product[] = [];
+
+  @ViewChild('form') form!: NgForm;
 
   formData = {
     fullName: '',
@@ -69,5 +71,18 @@ export class TemplateDrivenComponent {
   onSubmit() {
     console.log('Form Data:', this.formData)
     this.submitted = true
+    if (this.form.valid) {
+      if (window.showDapSnackbar) {
+        window.showDapSnackbar('Gratulálunk! Minden mező helyes!', {
+          duration: 4500,
+          alertType: 'successful',
+          actions: [
+            { href: 'https://sg.hu', text: 'SG' },
+            { href: 'https://index.hu', text: 'Index' },
+          ],
+        });
+      }
+      console.log(this.form.value);
+    }
   }
 }
