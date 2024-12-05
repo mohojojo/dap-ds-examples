@@ -1,7 +1,7 @@
-import { Component } from '@angular/core'
+import { Component, ViewChild } from '@angular/core'
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { DapDSInputValueAccessorDirective } from '../directives/dap-ds-input.directive'
-import { FormsModule } from '@angular/forms'
+import { FormsModule, NgModel } from '@angular/forms'
 import { DapDSCheckboxValueAccessorDirective } from '../directives/dap-ds-checkbox.directive'
 import { DapDSDatePickerValueAccessorDirective } from '../directives/dap-ds-datepicker.directive'
 import { DapDSTextareaValueAccessorDirective } from '../directives/dap-ds-textarea.directive'
@@ -29,7 +29,6 @@ import { DapDSComboboxAccessorDirective } from '../directives/dap-ds-combobox.di
 export class TemplateDrivenComponent {
   submitted = false
   products: Product[] = [];
-  private searchSubject = new Subject<string>();
 
   formData = {
     fullName: '',
@@ -42,10 +41,18 @@ export class TemplateDrivenComponent {
     tnc: false,
   }
 
-  constructor(private productService: ProductService) {
-    this.searchSubject.pipe(debounceTime(300)).subscribe((productFilter: string) => {
-        console.log('Debounced value changed:', productFilter);
-        this.getProducts(productFilter);
+  @ViewChild('productModel') productModel!: NgModel;
+
+  constructor(private productService: ProductService) {}
+
+  ngAfterViewInit(): void {
+    this.productModel.valueChanges?.pipe(
+      debounceTime(300)
+    ).subscribe((value: string) => {
+      console.log('Value changed:', value);
+      if (value) {
+        this.getProducts(value);
+      }
     });
   }
 
