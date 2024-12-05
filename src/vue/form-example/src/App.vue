@@ -1,17 +1,10 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
+import MyForm from './components/MyForm.vue';
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/form">Form</RouterLink>
-      </nav>
-    </div>
-  </header>
-
+  <MyForm></MyForm>
   <RouterView />
 </template>
 
