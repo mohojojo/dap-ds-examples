@@ -3,15 +3,17 @@
     <form @submit.prevent="handleSubmit">
       <dap-ds-stack>
         <dap-ds-input
-          @dds-change="firstNameChange"
           v-model="formData.fullName"
           feedbackType="negative"
+          required
+          :feedback="validateFullName()"
           label="Teljes név"
         ></dap-ds-input>
         <dap-ds-select
           label="Megnevezés"
           v-model="formData.title"
           required
+          :feedback="validateTitle()"
           feedbackType="negative"
         >
           <dap-ds-option-item value="mr">Úr</dap-ds-option-item>
@@ -21,11 +23,13 @@
         <dap-ds-input
           v-model="formData.email"
           placeholder="Email"
+          :feedback="validateEmail()"
           required
           label="E-mail cím"
           feedbackType="negative"
         ></dap-ds-input>
         <dap-ds-datepicker
+            :feedback="validateBirthDate()"
             v-model="formData.birthDate"
             feedbackType="negative"
             required
@@ -35,6 +39,7 @@
 
         <dap-ds-combobox
           v-model="formData.product"
+          :feedback="validateProduct()"
           label="Termék megnevezés"
           required
           sync
@@ -50,12 +55,14 @@
         ></dap-ds-input>
         <dap-ds-textarea
           v-model="formData.message"
+          :feedback="validateMessage()"
           required
           feedbackType="negative"
           label="Üzenet"
         ></dap-ds-textarea>
         <dap-ds-checkbox
           v-model="formData.consent"
+          :feedback="validateConsent()"
           required
           feedbackType="negative"
           label="Megnyitottam, elolvastam és elfogadom az Adatkezelési tájékoztatót."
@@ -70,6 +77,7 @@
 export default {
   data() {
     return {
+      submitted: false,
       formData: {
         fullName: '',
         title: '',
@@ -84,11 +92,56 @@ export default {
   },
   methods: {
     handleSubmit() {
-      console.log('Form Data:', this.formData)
+      this.submitted = true;
+      console.log('Form Data:', this.formData);
     },
-    firstNameChange() {
-      // This runs when focus changed after typing
-      console.log('First name has been changed!')
+    validateFullName() {
+      if (this.submitted && this.formData.fullName.length <= 0) {
+        return 'Add meg a teljes neved!';
+      }
+      return '';
+    },
+    validateTitle() {
+      if (this.submitted && this.formData.title.length <= 0) {
+        return 'Válassz megnevezést!';
+      }
+      return '';
+    },
+    validateEmail() {
+      if (this.submitted && this.formData.email.length <= 0) {
+        return 'Add meg az e-mail címed!';
+      }
+      if (this.submitted && this.formData.email.length > 0) {
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailPattern.test(this.formData.email)) {
+          return 'Az e-mail cím formátuma helytelen!';
+        }
+      }
+      return '';
+    },
+    validateBirthDate() {
+      if (this.submitted && this.formData.birthDate.length <= 0) {
+        return 'Add meg a születési dátumod!';
+      }
+      return '';
+    },
+    validateProduct() {
+      if (this.submitted && this.formData.product.length <= 0) {
+        return 'Válassz egy terméket!';
+      }
+      return '';
+    },
+    validateMessage() {
+      if (this.submitted && this.formData.message.length <= 0) {
+        return 'Írd be az üzeneted!';
+      }
+      return '';
+    },
+    validateConsent() {
+      if (this.submitted && !this.formData.consent) {
+        return 'Fogadd el az Adatkezelési tájékoztatót!';
+      }
+      return '';
     },
   },
 }
