@@ -1,17 +1,66 @@
 <template>
   <main>
-    <h2>Form</h2>
     <form @submit.prevent="handleSubmit">
-      <h2>Sign Up Form</h2>
       <dap-ds-stack>
         <dap-ds-input
           @dds-change="firstNameChange"
-          v-model="formData.firstName"
-          placeholder="First Name"
+          v-model="formData.fullName"
+          feedbackType="negative"
+          label="Teljes név"
         ></dap-ds-input>
-        <dap-ds-input v-model="formData.lastName" placeholder="Last Name"></dap-ds-input>
-        <dap-ds-input v-model="formData.email" placeholder="Email"></dap-ds-input>
-        <dap-ds-button @click="handleSubmit()">Submit</dap-ds-button>
+        <dap-ds-select
+          label="Megnevezés"
+          v-model="formData.title"
+          required
+          feedbackType="negative"
+        >
+          <dap-ds-option-item value="mr">Úr</dap-ds-option-item>
+          <dap-ds-option-item value="mrs">Hölgy</dap-ds-option-item>
+          <dap-ds-option-item value="miss">Kisasszony</dap-ds-option-item>
+        </dap-ds-select>
+        <dap-ds-input
+          v-model="formData.email"
+          placeholder="Email"
+          required
+          label="E-mail cím"
+          feedbackType="negative"
+        ></dap-ds-input>
+        <dap-ds-datepicker
+            v-model="formData.birthDate"
+            feedbackType="negative"
+            required
+            label="Születési dátum"
+            description="Add meg a születési dátumod!"
+        ></dap-ds-datepicker>
+
+        <dap-ds-combobox
+          v-model="formData.product"
+          label="Termék megnevezés"
+          required
+          sync
+          feedbackType="negative"
+          placeholder="Válassz egy terméket"
+        >
+        </dap-ds-combobox>
+        <dap-ds-input
+          v-model="formData.subject"
+          label="Tárgy"
+          optional
+          optionalLabel="(Nem kötelező)"
+        ></dap-ds-input>
+        <dap-ds-textarea
+          v-model="formData.message"
+          required
+          feedbackType="negative"
+          label="Üzenet"
+        ></dap-ds-textarea>
+        <dap-ds-checkbox
+          v-model="formData.consent"
+          required
+          feedbackType="negative"
+          label="Megnyitottam, elolvastam és elfogadom az Adatkezelési tájékoztatót."
+        ></dap-ds-checkbox>
+        <dap-ds-button @click="handleSubmit()">Küldés</dap-ds-button>
       </dap-ds-stack>
     </form>
   </main>
@@ -22,9 +71,14 @@ export default {
   data() {
     return {
       formData: {
-        firstName: '',
-        lastName: '',
+        fullName: '',
+        title: '',
         email: '',
+        birthDate: '',
+        product: '',
+        subject: '',
+        message: '',
+        consent: false,
       },
     }
   },
