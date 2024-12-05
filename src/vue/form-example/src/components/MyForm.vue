@@ -14,6 +14,7 @@
           v-model="formData.title"
           required
           :feedback="validateTitle()"
+          @dds-change="onTitleChange"
           feedbackType="negative"
         >
           <dap-ds-option-item value="mr">Úr</dap-ds-option-item>
@@ -46,6 +47,12 @@
           feedbackType="negative"
           placeholder="Válassz egy terméket"
         >
+          <dap-ds-option-item
+            v-for="product in products"
+            :key="product.id"
+            :value="product.id"
+            :label="product.title"
+          >{{ products.title }}</dap-ds-option-item>
         </dap-ds-combobox>
         <dap-ds-input
           v-model="formData.subject"
@@ -74,10 +81,29 @@
 </template>
 
 <script lang="ts">
+type FormEvent = { detail: { value: string; }; } | undefined;
+
+type Product = {
+  id: number;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+}
+
+type SearchResult = {
+  products: Product[];
+  total: number;
+  skip: number;
+  limit: number;
+}
+
 export default {
   data() {
     return {
       submitted: false,
+      products: [] as Product[],
+      searchResult: {} as SearchResult,
       formData: {
         fullName: '',
         title: '',
@@ -94,6 +120,12 @@ export default {
     handleSubmit() {
       this.submitted = true;
       console.log('Form Data:', this.formData);
+    },
+    onTitleChange(e: FormEvent) {
+      console.log('onTitleChange');
+      if (e?.detail?.value) {
+        console.log(e.detail.value);
+      }
     },
     validateFullName() {
       if (this.submitted && this.formData.fullName.length <= 0) {
