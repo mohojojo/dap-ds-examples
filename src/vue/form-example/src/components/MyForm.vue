@@ -71,6 +71,7 @@
         <dap-ds-checkbox
           v-model="formData.consent"
           :feedback="validateConsent()"
+          @dds-input="onCheckboxChanged"
           required
           feedbackType="negative"
           label="Megnyitottam, elolvastam és elfogadom az Adatkezelési tájékoztatót."
@@ -84,6 +85,7 @@
 <script lang="ts">
 type FormEvent = { detail: { value: string; }; } | undefined;
 type ProductSearchEvent = { detail: { input: string; }; } | undefined;
+type ConsentEvent = { detail: { checked: boolean; }; } | undefined;
 
 type Product = {
   id: number;
@@ -99,6 +101,19 @@ type SearchResult = {
   skip: number;
   limit: number;
 }
+
+type FormData = {
+  fullName: string;
+  title: string;
+  email: string;
+  birthDate: string;
+  product: string;
+  subject: string;
+  message: string;
+  consent: boolean;
+};
+
+type FormKeys = keyof FormData;
 
 export default {
   data() {
@@ -116,7 +131,7 @@ export default {
         subject: '',
         message: '',
         consent: false,
-      },
+      } as FormData,
     }
   },
   methods: {
@@ -135,6 +150,15 @@ export default {
         console.log(e.detail.value);
       }
     },
+    onCheckboxChanged(e: ConsentEvent) {
+      console.log('onCheckboxChanged');
+      if (e?.detail?.checked) {
+        console.log(e.detail.checked);
+        this.formData.consent = true;
+      } else {
+        this.formData.consent = false;
+      }
+    },
     onProductSearchInput(e: ProductSearchEvent) {
       console.log('onTitleChange');
       const productFilter = e?.detail?.input;
@@ -146,17 +170,17 @@ export default {
         }, 300);
       }
     },
-    validateFullName() {
-      if (this.submitted && this.formData.fullName.length <= 0) {
-        return 'Add meg a teljes neved!';
+    validateRequired(formField: FormKeys, errorMessage: string): string {
+      if (this.submitted && errorMessage && !this.formData[formField]) {
+        return errorMessage;
       }
       return '';
     },
+    validateFullName() {
+      return this.validateRequired('fullName', 'Add meg a teljes neved!');
+    },
     validateTitle() {
-      if (this.submitted && this.formData.title.length <= 0) {
-        return 'Válassz megnevezést!';
-      }
-      return '';
+      return this.validateRequired('title', 'Válassz megnevezést!');
     },
     validateEmail() {
       if (this.submitted && this.formData.email.length <= 0) {
@@ -171,22 +195,13 @@ export default {
       return '';
     },
     validateBirthDate() {
-      if (this.submitted && this.formData.birthDate.length <= 0) {
-        return 'Add meg a születési dátumod!';
-      }
-      return '';
+      return this.validateRequired('birthDate', 'Add meg a születési dátumod!');
     },
     validateProduct() {
-      if (this.submitted && this.formData.product.length <= 0) {
-        return 'Válassz egy terméket!';
-      }
-      return '';
+      return this.validateRequired('product', 'Válassz egy terméket!');
     },
     validateMessage() {
-      if (this.submitted && this.formData.message.length <= 0) {
-        return 'Írd be az üzeneted!';
-      }
-      return '';
+      return this.validateRequired('message', 'Írd be az üzeneted!');
     },
     validateConsent() {
       if (this.submitted && !this.formData.consent) {
