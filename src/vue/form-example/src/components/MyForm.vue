@@ -142,7 +142,7 @@ export default {
         clearTimeout(this.timeOutId);
         this.timeOutId = setTimeout(() => {
           this.getProducts(productFilter)
-            .then((data) => console.log(data))
+            .then((products: Product[]) => this.products = products ? products : [])
         }, 300);
       }
     },
