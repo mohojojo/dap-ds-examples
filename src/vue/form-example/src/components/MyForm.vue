@@ -1,5 +1,6 @@
 <template>
   <main>
+    <dap-ds-snackbar></dap-ds-snackbar>
     <form @submit.prevent="handleSubmit">
       <dap-ds-stack>
         <dap-ds-input
@@ -146,6 +147,16 @@ export default {
     handleSubmit() {
       this.submitted = true;
       console.log('Form Data:', this.formData);
+      if (window.showDapSnackbar) {
+        window.showDapSnackbar('Gratulálunk! Minden mező helyes!', {
+          duration: 4500,
+          alertType: 'successful',
+          actions: [
+            { href: 'https://sg.hu', text: 'SG' },
+            { href: 'https://index.hu', text: 'Index' },
+          ],
+        })
+      }
     },
     onTitleChange(e: FormEvent) {
       console.log('onTitleChange');
