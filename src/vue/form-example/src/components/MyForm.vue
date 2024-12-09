@@ -31,6 +31,7 @@
         ></dap-ds-input>
         <dap-ds-datepicker
             :feedback="validateBirthDate()"
+            @dds-change="onBirthDayChanged"
             v-model="formData.birthDate"
             feedbackType="negative"
             required
@@ -42,6 +43,7 @@
           v-model="formData.product"
           :feedback="validateProduct()"
           @dds-input="onProductSearchInput"
+          @dds-change="onProductSelected"
           label="Termék megnevezés"
           required
           sync
@@ -85,6 +87,7 @@
 <script lang="ts">
 type FormEvent = { detail: { value: string; }; } | undefined;
 type ProductSearchEvent = { detail: { input: string; }; } | undefined;
+type ProductSelectedEvent = { detail: { text: string; }; } | undefined;
 type ConsentEvent = { detail: { checked: boolean; }; } | undefined;
 
 type Product = {
@@ -147,6 +150,7 @@ export default {
     onTitleChange(e: FormEvent) {
       console.log('onTitleChange');
       if (e?.detail?.value) {
+        this.formData.title = e.detail.value;
         console.log(e.detail.value);
       }
     },
@@ -159,8 +163,15 @@ export default {
         this.formData.consent = false;
       }
     },
+    onBirthDayChanged(e: FormEvent) {
+      console.log('onBirthDayChanged');
+      if (e?.detail?.value) {
+        this.formData.birthDate = e.detail.value;
+        console.log(e.detail.value);
+      }
+    },
     onProductSearchInput(e: ProductSearchEvent) {
-      console.log('onTitleChange');
+      console.log('onProductSearchInput');
       const productFilter = e?.detail?.input;
       if (productFilter) {
         clearTimeout(this.timeOutId);
@@ -169,6 +180,11 @@ export default {
             .then((products: Product[]) => this.products = products ? products : [])
         }, 300);
       }
+    },
+    onProductSelected(e: ProductSelectedEvent) {
+      console.log('onProductSelected');
+      const selectedProduct = e?.detail?.text;
+      this.formData.product = selectedProduct ? selectedProduct : '';
     },
     validateRequired(formField: FormKeys, errorMessage: string): string {
       if (this.submitted && errorMessage && !this.formData[formField]) {
