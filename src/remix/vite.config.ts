@@ -21,4 +21,7 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  ssr: {
+    noExternal: ['dap-design-system'],
+  },
 });
