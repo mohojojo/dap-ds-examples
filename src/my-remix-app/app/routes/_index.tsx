@@ -23,6 +23,9 @@ const DapDSSelectReact = lazy(async () => await import('dap-design-system/dist/r
 const DapDSOptionItemReact = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSOptionItemReact })))
 const DapDSDatePicker = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSDatePickerReact })))
 const DapDSComboboxReact = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSComboboxReact })))
+const DapDSTextareaReact = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSTextareaReact })))
+const DapDSStackReact = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSStackReact })))
+const DapDSCheckboxReact = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSCheckboxReact })))
 
 const schema = zod.object({
   name: zod.string().min(1, { message: "Add meg a neved!" }),
@@ -68,6 +71,7 @@ export default function Index() {
       email: '',
       datepicker: '',
       product: '',
+      subject: '',
       message: '',
       consent: false,
     },
@@ -112,6 +116,7 @@ export default function Index() {
           <>
             <DapDSSnackbar></DapDSSnackbar>
             <Form noValidate onSubmit={handleSubmit} method="POST" navigate={false} fetcherKey="my-key">
+              <DapDSStackReact>
               <Controller
                 name="name"
                 control={control}
@@ -259,7 +264,72 @@ export default function Index() {
                   },
                 }}
               />
+              <Controller
+                name="subject"
+                control={control}
+                render={({ field: { value } }) => (
+                  <DapDSInput
+                    id="subject"
+                    label="Tárgy"
+                    optional
+                    optionalLabel="(Nem kötelező)"
+                    name="subject"
+                    value={value}
+                    onDdsChange={e => {
+                      setValue('subject', e.detail.value)
+                    }}></DapDSInput>
+                )}
+              />
+              <Controller
+                name="message"
+                control={control}
+                render={({ field: { value } }) => (
+                  <DapDSTextareaReact
+                    id="message"
+                    label="Üzenet"
+                    name="message"
+                    value={value}
+                    feedback={errors?.message?.message?.toString()}
+                    feedbackType="negative"
+                    onDdsChange={e => {
+                      setValue('message', e.detail.value, { shouldValidate: true })
+                    }}></DapDSTextareaReact>
+                )}
+                rules={{
+                  validate: {
+                    required: value => {
+                      if (!value) return 'Írd be az üzeneted!'
+                    },
+                  },
+                }}
+              />
+              <Controller
+                name="consent"
+                control={control}
+                render={({ field: { value } }) => (
+                  <DapDSCheckboxReact
+                    id="consent"
+                    label="Megnyitottam, elolvastam és elfogadom az Adatkezelési tájékoztatót."
+                    name="consent"
+                    checked={value}
+                    feedback={errors?.consent?.message?.toString()}
+                    feedbackType="negative"
+                    onDdsChange={e => {
+                      setValue('consent', e.detail.checked, {
+                        shouldValidate: true,
+                      })
+                    }}></DapDSCheckboxReact>
+                )}
+                rules={{
+                  validate: {
+                    required: value => {
+                      if (!value) return 'Fogadd el az Adatkezelési tájékoztatót!'
+                    },
+                  },
+                }}
+              />
             <DapDSButton htmlType="submit">Submit</DapDSButton>
+            </DapDSStackReact>
           </Form>
         </>
       }

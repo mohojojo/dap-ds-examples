@@ -5,6 +5,8 @@
 html,
 body {
   @apply bg-white dark:bg-gray-950;
+  
+  max-width: 500px;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
