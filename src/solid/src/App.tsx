@@ -88,6 +88,7 @@ function App() {
               name="product"
               value={form.product}
               feedbackType="negative"
+              onDdsChange={(productValue: string) => setForm({product: productValue})}
               onDdsInput={
                 (productFilter: string) => {
                   if (productFilter) {
@@ -102,6 +103,7 @@ function App() {
                     }, 300);
                   }
               }}
+              sync
               placeholder="Válassz egy terméket">
                 <For each={products()}>
                   {(item, _index) => (

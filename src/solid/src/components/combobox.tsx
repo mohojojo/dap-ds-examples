@@ -18,7 +18,9 @@ type DapDSComboboxSolidProps = Partial<{
     value: string;
     feedback: string;
     feedbackType: string;
+    sync: boolean;
     onDdsInput: (input: string) => void;
+    onDdsChange: (change: string) => void;
 }>
 
 const DapDSComboboxSolid = (props: DapDSComboboxSolidProps): JSX.Element => {
@@ -29,12 +31,20 @@ const DapDSComboboxSolid = (props: DapDSComboboxSolidProps): JSX.Element => {
     }
   };
 
+  const handleDdsChange = (event: CustomEvent) => {
+    if (props.onDdsChange) {
+      props.onDdsChange(event?.detail?.value);
+    }
+  };
+
   createEffect(() => {
     const element = comboboxRef;
     element?.addEventListener('dds-input', handleDdsInput);
+    element?.addEventListener('dds-change', handleDdsChange);
 
     onCleanup(() => {
       element?.removeEventListener('dds-input', handleDdsInput);
+      element?.removeEventListener('dds-change', handleDdsChange);
     });
   });
 
@@ -54,9 +64,11 @@ const DapDSComboboxSolid = (props: DapDSComboboxSolidProps): JSX.Element => {
     label={props.label}
     name={props.name}
     feedbackType={props.feedbackType}
+    sync={props.sync}
     value={props.value}
     feedback={props.feedback}
     on:ddsInput={handleDdsInput}
+    on:ddsChange={handleDdsChange}
     >
     </dap-ds-combobox>;
 };
