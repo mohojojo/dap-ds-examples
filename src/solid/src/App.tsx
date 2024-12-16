@@ -8,17 +8,36 @@ import DapDSStackSolid from './components/stack'
 import DapDSDatePickerSolid from './components/datepicker';
 import DapDSTextareaSolid from './components/textarea';
 import DapDSCheckboxSolid from './components/checkbox';
+import DapDSComboboxSolid from './components/combobox';
+import { createSignal, For } from 'solid-js';
+
+export type Product = {
+  id: number;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+}
 
 function App() {
+  let timeOutId = 0;
+  const [products, setProducts] = createSignal<Product[]>([]);
   const [form, setForm] = createStore({
     name: "",
     prefix: "",
     email: "",
     birthDate: "",
+    product: "",
     subject: "",
     message: "",
     consent: false,
   });
+
+  const getProducts = async(filter: string) => {
+    const response = await fetch(`https://dummyjson.com/products/search?q=${filter}`);
+    const json = await response.json();
+    return json.products.filter((item: any) => item.title.toLowerCase().startsWith(filter.toLowerCase()));
+  }
 
   return (
     <>
@@ -55,15 +74,44 @@ function App() {
               onDdsChange={(emailValue: string) => setForm({email: emailValue})}
             ></DapDSInputSolid>
             <DapDSDatePickerSolid
-                id="birthDate"
-                label="Születési dátum"
-                name="datepicker"
-                value={form.birthDate}
-                feedbackType="negative"
-                onDdsChange={(birthDateValue: string) => setForm({birthDate: birthDateValue})}
+              id="birthDate"
+              label="Születési dátum"
+              name="datepicker"
+              value={form.birthDate}
+              feedbackType="negative"
+              onDdsChange={(birthDateValue: string) => setForm({birthDate: birthDateValue})}
               >
             </DapDSDatePickerSolid>
-              <DapDSInputSolid
+            <DapDSComboboxSolid
+              id="product"
+              label="Kedvenc terméked"
+              name="product"
+              value={form.product}
+              feedbackType="negative"
+              onDdsInput={
+                (productFilter: string) => {
+                  if (productFilter) {
+                    clearTimeout(timeOutId);
+                    timeOutId = setTimeout(() => {
+                      getProducts(productFilter)
+                        .then((products: Product[]) => {
+                          if (products) {
+                            setProducts([...products])
+                          }
+                        })
+                    }, 300);
+                  }
+              }}
+              placeholder="Válassz egy terméket">
+                <For each={products()}>
+                  {(item, _index) => (
+                    <DapDSOptionItemSolid key={item.id} value={item.id as unknown as string} label={item.title}>
+                    {item.title}
+                  </DapDSOptionItemSolid>
+                  )}
+                </For>
+            </DapDSComboboxSolid>
+            <DapDSInputSolid
               id="subject"
               label="Tárgy"
               name="subject"

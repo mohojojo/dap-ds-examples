@@ -9,15 +9,6 @@ declare module 'solid-js' {
   }
 }
 
-export const emitDdsChange = () => {
-  const event = new CustomEvent('dds-change', {
-    detail: { message: 'Data has changed!' },
-    bubbles: true,
-    composed: true,
-  });
-  window.dispatchEvent(event);
-};
-
 type DapDSInputSolidProps = Partial<{
     children: JSX.Element;
     id: string;

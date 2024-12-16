@@ -11,6 +11,7 @@ declare module 'solid-js' {
 type DapDSOptionItemSolidProps = Partial<{
     children: JSX.Element;
     id: string;
+    key: number;
     label: string;
     name: string;
     value: string;
@@ -22,6 +23,7 @@ const DapDSOptionItemSolid = (props: DapDSOptionItemSolidProps): JSX.Element => 
   return <dap-ds-option-item
     id={props.id}
     label={props.label}
+    key={props.key}
     name={props.name}
     feedbackType={props.feedbackType}
     value={props.value}
