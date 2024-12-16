@@ -7,6 +7,7 @@ import DapDSSelectSolid from './components/select';
 import DapDSStackSolid from './components/stack'
 import DapDSDatePickerSolid from './components/datepicker';
 import DapDSTextareaSolid from './components/textarea';
+import DapDSCheckboxSolid from './components/checkbox';
 
 function App() {
   const [form, setForm] = createStore({
@@ -16,6 +17,7 @@ function App() {
     birthDate: "",
     subject: "",
     message: "",
+    consent: false,
   });
 
   return (
@@ -29,7 +31,6 @@ function App() {
               label="Teljes név"
               name="name"
               feedbackType="negative"
-              feedback="fix hiba üzenet"
               value={form.name}
               onDdsChange={(nameValue: string) => setForm({name: nameValue})}
             >
@@ -78,6 +79,14 @@ function App() {
               feedbackType="negative"
               onDdsChange={(messageValue: string) => setForm({message: messageValue})}
             ></DapDSTextareaSolid>
+            <DapDSCheckboxSolid
+              id="consent"
+              label="Megnyitottam, elolvastam és elfogadom az Adatkezelési tájékoztatót."
+              name="consent"
+              checked={form.consent}
+              feedbackType="negative"
+              onDdsChange={(consentValue: boolean) => setForm({consent: consentValue})}
+            ></DapDSCheckboxSolid>
             <DapDSButtonSolid htmlType="submit">Küldés</DapDSButtonSolid>
           </DapDSStackSolid>
           <div>
