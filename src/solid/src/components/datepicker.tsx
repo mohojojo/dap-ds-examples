@@ -4,7 +4,7 @@ import { onMount } from "solid-js";
 declare module 'solid-js' {
   namespace JSX {
     interface IntrinsicElements {
-      'dap-ds-input': any;
+      'dap-ds-datepicker': any;
     }
   }
 }
@@ -18,7 +18,7 @@ export const emitDdsChange = () => {
   window.dispatchEvent(event);
 };
 
-type DapDSInputSolidProps = Partial<{
+type DapDSDatePickerSolidProps = Partial<{
     children: JSX.Element;
     id: string;
     label: string;
@@ -29,8 +29,11 @@ type DapDSInputSolidProps = Partial<{
     onDdsChange: (value: string) => void;
 }>
 
-const DapDSInputSolid = (props: DapDSInputSolidProps): JSX.Element => {
-  let inputRef: HTMLElement | null = null;
+
+
+const DapDSDatePickerSolid = (props: DapDSDatePickerSolidProps): JSX.Element => {
+  let datePickerRef: HTMLElement | null = null;
+
   const handleDdsChange = (event: CustomEvent) => {
     if (props.onDdsChange) {
       props.onDdsChange(event?.detail?.value);
@@ -38,27 +41,25 @@ const DapDSInputSolid = (props: DapDSInputSolidProps): JSX.Element => {
   };
 
   createEffect(() => {
-    const element = inputRef;
+    const element = datePickerRef;
     element?.addEventListener('dds-change', handleDdsChange);
-
     onCleanup(() => {
       element?.removeEventListener('dds-change', handleDdsChange);
     });
   });
 
   onMount(() => {
-    if (inputRef) {
-      // Ensure children are set correctly as the content
+    if (datePickerRef) {
       if (props.children) {
-        inputRef.innerHTML = ""; // Clear existing content
-        inputRef.append(props.children as Node);
+        datePickerRef.innerHTML = "";
+        datePickerRef.append(props.children as Node);
       }
     }
   });
 
-  return <dap-ds-input
+  return <dap-ds-datepicker
     id={props.id}
-    ref={(el: HTMLElement | null) => inputRef = el}
+    ref={(el: HTMLElement | null) => datePickerRef = el}
     label={props.label}
     name={props.name}
     feedbackType={props.feedbackType}
@@ -66,7 +67,7 @@ const DapDSInputSolid = (props: DapDSInputSolidProps): JSX.Element => {
     feedback={props.feedback}
     on:ddsChange={handleDdsChange}
     >
-    </dap-ds-input>;
+    </dap-ds-datepicker>;
 };
 
-export default DapDSInputSolid;
+export default DapDSDatePickerSolid;

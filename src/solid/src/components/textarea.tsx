@@ -4,21 +4,12 @@ import { onMount } from "solid-js";
 declare module 'solid-js' {
   namespace JSX {
     interface IntrinsicElements {
-      'dap-ds-input': any;
+      'dap-ds-textarea': any;
     }
   }
 }
 
-export const emitDdsChange = () => {
-  const event = new CustomEvent('dds-change', {
-    detail: { message: 'Data has changed!' },
-    bubbles: true,
-    composed: true,
-  });
-  window.dispatchEvent(event);
-};
-
-type DapDSInputSolidProps = Partial<{
+type DapDSTextareaSolidProps = Partial<{
     children: JSX.Element;
     id: string;
     label: string;
@@ -29,8 +20,8 @@ type DapDSInputSolidProps = Partial<{
     onDdsChange: (value: string) => void;
 }>
 
-const DapDSInputSolid = (props: DapDSInputSolidProps): JSX.Element => {
-  let inputRef: HTMLElement | null = null;
+const DapDSTextareaSolid = (props: DapDSTextareaSolidProps): JSX.Element => {
+  let textareaRef: HTMLElement | null = null;
   const handleDdsChange = (event: CustomEvent) => {
     if (props.onDdsChange) {
       props.onDdsChange(event?.detail?.value);
@@ -38,7 +29,7 @@ const DapDSInputSolid = (props: DapDSInputSolidProps): JSX.Element => {
   };
 
   createEffect(() => {
-    const element = inputRef;
+    const element = textareaRef;
     element?.addEventListener('dds-change', handleDdsChange);
 
     onCleanup(() => {
@@ -47,18 +38,18 @@ const DapDSInputSolid = (props: DapDSInputSolidProps): JSX.Element => {
   });
 
   onMount(() => {
-    if (inputRef) {
+    if (textareaRef) {
       // Ensure children are set correctly as the content
       if (props.children) {
-        inputRef.innerHTML = ""; // Clear existing content
-        inputRef.append(props.children as Node);
+        textareaRef.innerHTML = ""; // Clear existing content
+        textareaRef.append(props.children as Node);
       }
     }
   });
 
-  return <dap-ds-input
+  return <dap-ds-textarea
     id={props.id}
-    ref={(el: HTMLElement | null) => inputRef = el}
+    ref={(el: HTMLElement | null) => textareaRef = el}
     label={props.label}
     name={props.name}
     feedbackType={props.feedbackType}
@@ -66,7 +57,7 @@ const DapDSInputSolid = (props: DapDSInputSolidProps): JSX.Element => {
     feedback={props.feedback}
     on:ddsChange={handleDdsChange}
     >
-    </dap-ds-input>;
+    </dap-ds-textarea>;
 };
 
-export default DapDSInputSolid;
+export default DapDSTextareaSolid;
