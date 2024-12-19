@@ -1,5 +1,4 @@
 import { createEffect, JSX, onCleanup } from "solid-js";
-import { onMount } from "solid-js";
 
 declare module 'solid-js' {
   namespace JSX {
@@ -48,16 +47,6 @@ const DapDSComboboxSolid = (props: DapDSComboboxSolidProps): JSX.Element => {
     });
   });
 
-  onMount(() => {
-    if (comboboxRef) {
-      // Ensure children are set correctly as the content
-      if (props.children) {
-        comboboxRef.innerHTML = ""; // Clear existing content
-        comboboxRef.append(props.children as Node);
-      }
-    }
-  });
-
   return <dap-ds-combobox
     id={props.id}
     ref={(el: HTMLElement | null) => comboboxRef = el}
@@ -69,8 +58,7 @@ const DapDSComboboxSolid = (props: DapDSComboboxSolidProps): JSX.Element => {
     feedback={props.feedback}
     on:ddsInput={handleDdsInput}
     on:ddsChange={handleDdsChange}
-    >
-    </dap-ds-combobox>;
+    >{props.children}</dap-ds-combobox>;
 };
 
 export default DapDSComboboxSolid;
