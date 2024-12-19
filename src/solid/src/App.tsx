@@ -125,8 +125,9 @@ function App() {
               id="prefix"
               label="Megnevezés"
               name="prefix"
-              value={form.prefix}
-              onDdsChange={(selectValue: string) => setForm({prefix: selectValue})}
+              onDdsChange={
+                (selectValue: string) => setForm({prefix: selectValue})
+              }
               >
                 <DapDSOptionItemSolid value="mr">Úr</DapDSOptionItemSolid>
                 <DapDSOptionItemSolid value="mrs">Hölgy</DapDSOptionItemSolid>

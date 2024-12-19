@@ -1,5 +1,4 @@
-import { JSX } from "solid-js";
-import { onMount } from "solid-js";
+import { createEffect, JSX, onCleanup } from "solid-js";
 
 declare module 'solid-js' {
   namespace JSX {
@@ -30,14 +29,13 @@ const DapDSSelectSolid = (props: DapDSSelectSolidProps): JSX.Element => {
     }
   };
 
-  onMount(() => {
-    if (selectRef) {
-      // Ensure children are set correctly as the content
-      if (props.children) {
-        selectRef.innerHTML = ""; // Clear existing content
-        selectRef.append(props.children as Node);
-      }
-    }
+  createEffect(() => {
+    const element = selectRef;
+    element?.addEventListener('dds-change', handleDdsChange);
+
+    onCleanup(() => {
+      element?.removeEventListener('dds-change', handleDdsChange);
+    });
   });
 
   return <dap-ds-select
@@ -49,7 +47,7 @@ const DapDSSelectSolid = (props: DapDSSelectSolidProps): JSX.Element => {
     value={props.value}
     feedback={props.feedback}
     on:ddsChange={handleDdsChange}
-    >
+    >{props.children}
     </dap-ds-select>;
 };
 
