@@ -18,6 +18,17 @@ declare global {
   }
 }
 
+interface FormFields {
+  name: string;
+  prefix: string;
+  email: string;
+  birthDate: string;
+  product: string;
+  subject: string;
+  message: string;
+  consent: boolean;
+}
+
 export type Product = {
   id: number;
   title: string;
@@ -29,7 +40,7 @@ export type Product = {
 function App() {
   let timeOutId = 0;
   const [products, setProducts] = createSignal<Product[]>([]);
-  const [form, setForm] = createStore({
+  const [form, setForm] = createStore<FormFields>({
     name: "",
     prefix: "",
     email: "",
@@ -38,6 +49,17 @@ function App() {
     subject: "",
     message: "",
     consent: false,
+  });
+
+  const [errors, setErrors] = createStore({
+    name: "",
+    prefix: "",
+    email: "",
+    birthDate: "",
+    product: "",
+    subject: "",
+    message: "",
+    consent: "",
   });
 
   const getProducts = async(filter: string) => {
@@ -60,6 +82,17 @@ function App() {
     }
   }
 
+  const getFormFieldValue = (field: keyof FormFields): string | boolean=> form[field];
+  const updateErrorField = (field: keyof FormFields, value: string) => setErrors({ [field]: value });
+
+  const validateRequired = (field: keyof FormFields, message: string): void => {
+    if (!getFormFieldValue(field)) {
+      updateErrorField(field, message)
+    } else {
+      updateErrorField(field, '')
+    }
+  }
+
   return (
     <>
       <div>
@@ -73,7 +106,11 @@ function App() {
               name="name"
               feedbackType="negative"
               value={form.name}
-              onDdsChange={(nameValue: string) => setForm({name: nameValue})}
+              feedback={errors?.name?.toString()}
+              onDdsChange={(nameValue: string) => {
+                setForm({name: nameValue});
+                validateRequired('name', 'Add meg a teljes neved!');
+              }}
             >
             </DapDSInputSolid>
             <DapDSSelectSolid
@@ -93,7 +130,11 @@ function App() {
               name="email"
               value={form.email}
               feedbackType="negative"
-              onDdsChange={(emailValue: string) => setForm({email: emailValue})}
+              feedback={errors?.email?.toString()}
+              onDdsChange={(emailValue: string) => {
+                setForm({email: emailValue});
+                validateRequired('email', 'Add meg az e-mail címed!');
+              }}
             ></DapDSInputSolid>
             <DapDSDatePickerSolid
               id="birthDate"
@@ -101,7 +142,11 @@ function App() {
               name="datepicker"
               value={form.birthDate}
               feedbackType="negative"
-              onDdsChange={(birthDateValue: string) => setForm({birthDate: birthDateValue})}
+              feedback={errors?.birthDate?.toString()}
+              onDdsChange={(birthDateValue: string) => {
+                setForm({birthDate: birthDateValue});
+                validateRequired('birthDate', 'Add meg a születési dátumod!');
+              }}
               >
             </DapDSDatePickerSolid>
             <DapDSComboboxSolid
@@ -149,7 +194,11 @@ function App() {
               name="message"
               value={form.message}
               feedbackType="negative"
-              onDdsChange={(messageValue: string) => setForm({message: messageValue})}
+              feedback={errors?.message?.toString()}
+              onDdsChange={(messageValue: string) => {
+                setForm({message: messageValue});
+                validateRequired('message', 'Írd be az üzeneted!');
+              }}
             ></DapDSTextareaSolid>
             <DapDSCheckboxSolid
               id="consent"
@@ -157,7 +206,11 @@ function App() {
               name="consent"
               checked={form.consent}
               feedbackType="negative"
-              onDdsChange={(consentValue: boolean) => setForm({consent: consentValue})}
+              feedback={errors?.consent?.toString()}
+              onDdsChange={(consentValue: boolean) => {
+                setForm({consent: consentValue});
+                validateRequired('consent', 'Fogadd el az Adatkezelési tájékoztatót!');
+            }}
             ></DapDSCheckboxSolid>
             <DapDSButtonSolid onClick={(e: Event) => onSubmit(e)} htmlType="submit">Küldés</DapDSButtonSolid>
           </DapDSStackSolid>
