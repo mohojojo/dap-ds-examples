@@ -106,7 +106,6 @@ function App() {
     <>
       <div>
         <DapDSSnackbarSolid></DapDSSnackbarSolid>
-        <h1>Solid</h1>
         <form>
           <DapDSStackSolid>
             <DapDSInputSolid
