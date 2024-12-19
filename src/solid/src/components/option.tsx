@@ -17,6 +17,7 @@ type DapDSOptionItemSolidProps = Partial<{
     value: string;
     feedback: string;
     feedbackType: string;
+    selected: boolean;
 }>
 
 const DapDSOptionItemSolid = (props: DapDSOptionItemSolidProps): JSX.Element => {
@@ -28,6 +29,7 @@ const DapDSOptionItemSolid = (props: DapDSOptionItemSolidProps): JSX.Element => 
     feedbackType={props.feedbackType}
     value={props.value}
     feedback={props.feedback}
+    selected={props.selected}
     >{props.children}
     </dap-ds-option-item>;
 };

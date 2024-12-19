@@ -26,7 +26,7 @@ const DapDSSelectSolid = (props: DapDSSelectSolidProps): JSX.Element => {
   const handleDdsChange = (event: CustomEvent) => {
     console.log(event);
     if (props.onDdsChange) {
-      props.onDdsChange(event.detail);
+      props.onDdsChange(event?.detail?.value);
     }
   };
 
