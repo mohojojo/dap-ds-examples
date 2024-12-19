@@ -93,6 +93,15 @@ function App() {
     }
   }
 
+  const validateEmailPattern = (field: keyof FormFields, message: string): void => {
+    const fieldValue = getFormFieldValue(field);
+    if (typeof fieldValue === 'string' && !fieldValue.match(/[^@\s]+@[^@\s]+\.[^@\s]+/)) {
+      updateErrorField(field, message);
+    } else {
+      updateErrorField(field, '');
+    }
+  }
+
   return (
     <>
       <div>
@@ -133,7 +142,7 @@ function App() {
               feedback={errors?.email?.toString()}
               onDdsChange={(emailValue: string) => {
                 setForm({email: emailValue});
-                validateRequired('email', 'Add meg az e-mail címed!');
+                validateEmailPattern('email', 'Az e-mail cím formátuma helytelen vagy üres!');
               }}
             ></DapDSInputSolid>
             <DapDSDatePickerSolid
