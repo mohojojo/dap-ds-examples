@@ -20,6 +20,12 @@ type DapDSButtonSolidProps = Partial<{
 const DapDSButtonSolid = (props: DapDSButtonSolidProps): JSX.Element => {
   let buttonRef: HTMLElement | null = null;
 
+  const handleClick = (event: CustomEvent) => {
+    if (props.onClick) {
+      props.onClick(event);
+    }
+  };
+
   onMount(() => {
     if (buttonRef) {
       // Ensure children are set correctly as the content
@@ -33,6 +39,7 @@ const DapDSButtonSolid = (props: DapDSButtonSolidProps): JSX.Element => {
   return <dap-ds-button
     ref={(el: HTMLElement | null) => buttonRef = el}
     htmlType={props.htmlType}
+    on:click={handleClick}
   ></dap-ds-button>;
 };
 

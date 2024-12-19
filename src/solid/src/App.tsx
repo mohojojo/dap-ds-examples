@@ -10,6 +10,13 @@ import DapDSTextareaSolid from './components/textarea';
 import DapDSCheckboxSolid from './components/checkbox';
 import DapDSComboboxSolid from './components/combobox';
 import { createSignal, For } from 'solid-js';
+import DapDSSnackbarSolid from './components/snackbar';
+
+declare global {
+  interface Window {
+    showDapSnackbar?: (message: string, options?: any) => void
+  }
+}
 
 export type Product = {
   id: number;
@@ -39,9 +46,24 @@ function App() {
     return json.products.filter((item: any) => item.title.toLowerCase().startsWith(filter.toLowerCase()));
   }
 
+  const onSubmit = (e: Event) => {
+    e.preventDefault();
+    if (window.showDapSnackbar) {
+      window.showDapSnackbar('Gratulálunk! Minden mező helyes!', {
+        duration: 4500,
+        alertType: 'successful',
+        actions: [
+          { href: 'https://sg.hu', text: 'SG' },
+          { href: 'https://index.hu', text: 'Index' },
+        ],
+      })
+    }
+  }
+
   return (
     <>
       <div>
+        <DapDSSnackbarSolid></DapDSSnackbarSolid>
         <h1>Solid</h1>
         <form>
           <DapDSStackSolid>
@@ -137,7 +159,7 @@ function App() {
               feedbackType="negative"
               onDdsChange={(consentValue: boolean) => setForm({consent: consentValue})}
             ></DapDSCheckboxSolid>
-            <DapDSButtonSolid htmlType="submit">Küldés</DapDSButtonSolid>
+            <DapDSButtonSolid onClick={(e: Event) => onSubmit(e)} htmlType="submit">Küldés</DapDSButtonSolid>
           </DapDSStackSolid>
           <div>
               <h3>Form Data:</h3>
