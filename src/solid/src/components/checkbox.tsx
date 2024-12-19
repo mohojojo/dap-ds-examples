@@ -25,7 +25,7 @@ const DapDSCheckboxSolid = (props: DapDSCheckboxSolidProps): JSX.Element => {
   let checkboxRef: HTMLElement | null = null;
   const handleDdsChange = (event: CustomEvent) => {
     if (props.onDdsChange) {
-      props.onDdsChange(event?.detail?.value);
+      props.onDdsChange(event?.detail?.checked);
     }
   };
 

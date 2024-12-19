@@ -213,8 +213,8 @@ function App() {
               id="consent"
               label="Megnyitottam, elolvastam és elfogadom az Adatkezelési tájékoztatót."
               name="consent"
-              checked={form.consent}
               feedbackType="negative"
+              checked={form.consent}
               feedback={errors?.consent?.toString()}
               onDdsChange={(consentValue: boolean) => {
                 setForm({consent: consentValue});
