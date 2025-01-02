@@ -12,8 +12,7 @@ export default function Home() {
     formState: { errors },
   } = useForm()
 
-  const onSubmit = (data: unknown) => {
-    console.log('data', data)
+  const onSubmit = () => {
     if (window.showDapSnackbar) {
       window.showDapSnackbar('Gratulálunk! Minden mező helyes!', {
         duration: 4500,
@@ -42,7 +41,6 @@ export default function Home() {
                 feedback={errors?.name?.message?.toString()}
                 feedbackType="negative"
                 ondds-change={e => {
-                  console.log('dap-ds-input név');
                   setValue('name', e.detail.value, { shouldValidate: true });
                 }}></dap-ds-input>
             )}
@@ -122,11 +120,9 @@ export default function Home() {
                   feedback={errors?.datepicker?.message?.toString()}
                   feedbackType={errors?.datepicker ? 'negative' : 'positive'}
                   ondds-change={(e) => {
-                    console.log(e)
                     setValue('datepicker', e.detail.value, { shouldValidate: true })}
                   }
                   ondds-invaliddate={(e) => {
-                    console.log(e)
                     if (e.detail.type === 'invalid') {
                       setError('datepicker', { message: `Érvénytelen dátum: ${dayjs.Ls[dayjs.locale()].formats.L}` })
                     }
@@ -136,7 +132,6 @@ export default function Home() {
                     }
                   }}
                   ondds-validdate={(e) => {
-                    console.log(e)
                     setError('datepicker', { message: '' })
                   }}
                 >

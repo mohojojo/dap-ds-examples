@@ -27,6 +27,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <ClientApplication>
           <Suspense>
+            <dap-ds-snackbar></dap-ds-snackbar>
             <main className="main" id="root">
               {children}
             </main>
