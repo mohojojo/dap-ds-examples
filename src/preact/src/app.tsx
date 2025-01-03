@@ -3,6 +3,8 @@ import { Controller, useForm } from 'react-hook-form';
 import './app.css'
 import dayjs from 'dayjs'
 import { useState } from 'preact/hooks';
+import { useQuery } from 'react-query';
+import useDebounce from './use-debounce';
 
 export type Product = {
   id: number;
@@ -12,8 +14,18 @@ export type Product = {
   price: number;
 }
 
+function useProducts(filter: string) {
+  let url = `https://dummyjson.com/products/search?q=${filter}`;
+  return useQuery(
+    ["products", { filter }],
+    () => fetch(url).then((res) => res.json()),
+    {
+      enabled: !!filter, // Run when 'filter' is not empty
+    }
+  );
+}
+
 export function App() {
-  let timeOutId = 0
   const {
     control,
     handleSubmit,
@@ -22,13 +34,9 @@ export function App() {
     formState: { errors },
   } = useForm()
 
-  const [products, setProducts] = useState<Product[]>([])
-  
-  const getProducts = async(filter: string) => {
-    const response = await fetch(`https://dummyjson.com/products/search?q=${filter}`)
-    const json = await response.json()
-    return json.products.filter((item: any) => item.title.toLowerCase().startsWith(filter.toLowerCase()))
-  }
+  const [filter, setFilter] = useState('')
+  const debouncedFilter = useDebounce(filter, 350);
+  const { data } = useProducts(debouncedFilter as string);
 
   const onSubmit = (data: any) => {
     console.log('data', data)
@@ -185,20 +193,13 @@ export function App() {
                   onDdsInput={e => {
                     const productFilter = e?.detail?.input;
                     if (productFilter) {
-                      clearTimeout(timeOutId);
-                      timeOutId = setTimeout(() => {
-                        getProducts(productFilter)
-                          .then((products: Product[]) => {
-                            if (products) {
-                              setProducts([...products])
-                            }
-                          })
-                      }, 300);
+                      setFilter(productFilter);
                     }
                   }}
                   sync
                   placeholder="Válassz egy terméket">
-                  {products?.map((item: Product) => (
+                  
+                  {data?.products?.map((item: Product) => (
                     <DapDSOptionItemReact key={item.id} value={item.id} label={item.title}>
                       {item.title}
                     </DapDSOptionItemReact>
