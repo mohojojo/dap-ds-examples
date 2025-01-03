@@ -1,16 +1,6 @@
 import { createStore } from 'solid-js/store';
 import './App.css'
-import DapDSButtonSolid from './components/button'
-import DapDSInputSolid from './components/input'
-import DapDSOptionItemSolid from './components/option';
-import DapDSSelectSolid from './components/select';
-import DapDSStackSolid from './components/stack'
-import DapDSDatePickerSolid from './components/datepicker';
-import DapDSTextareaSolid from './components/textarea';
-import DapDSCheckboxSolid from './components/checkbox';
-import DapDSComboboxSolid from './components/combobox';
 import { createSignal, For } from 'solid-js';
-import DapDSSnackbarSolid from './components/snackbar';
 
 declare global {
   interface Window {
@@ -36,6 +26,22 @@ export type Product = {
   category: string;
   price: number;
 }
+
+interface InputDetail {
+  value: string;
+}
+
+interface NestedInputDetail {
+  input: string;
+}
+
+interface CheckedDetail {
+  checked: boolean;
+}
+
+type InputEvent = CustomEvent<InputDetail>;
+type NestedInputEvent = CustomEvent<NestedInputDetail>;
+type CheckedInputEvent = CustomEvent<CheckedDetail>;
 
 function App() {
   let timeOutId = 0;
@@ -105,68 +111,78 @@ function App() {
   return (
     <>
       <div>
-        <DapDSSnackbarSolid></DapDSSnackbarSolid>
-        <form>
-          <DapDSStackSolid>
-            <DapDSInputSolid
+        <dap-ds-snackbar></dap-ds-snackbar>
+        <form onSubmit={onSubmit}>
+          <dap-ds-stack>
+            <dap-ds-input
               id="name"
               label="Teljes név"
               name="name"
               feedbackType="negative"
               value={form.name}
               feedback={errors?.name?.toString()}
-              onDdsChange={(nameValue: string) => {
+              on:dds-change={(e: InputEvent) => {
+                const nameValue = e.detail.value;
                 setForm({name: nameValue});
                 validateRequired('name', 'Add meg a teljes neved!');
               }}
             >
-            </DapDSInputSolid>
-            <DapDSSelectSolid
+            </dap-ds-input>
+            <dap-ds-select
               id="prefix"
               label="Megnevezés"
               name="prefix"
-              onDdsChange={
-                (selectValue: string) => setForm({prefix: selectValue})
+              on:dds-change={
+                (e: InputEvent) => {
+                  const selectValue = e.detail.value;
+                  setForm({prefix: selectValue});
+                }
               }
               >
-                <DapDSOptionItemSolid value="mr">Úr</DapDSOptionItemSolid>
-                <DapDSOptionItemSolid value="mrs">Hölgy</DapDSOptionItemSolid>
-                <DapDSOptionItemSolid value="miss">Kisasszony</DapDSOptionItemSolid>
-            </DapDSSelectSolid>
-            <DapDSInputSolid
+                <dap-ds-option-item value="mr">Úr</dap-ds-option-item>
+                <dap-ds-option-item value="mrs">Hölgy</dap-ds-option-item>
+                <dap-ds-option-item value="miss">Kisasszony</dap-ds-option-item>
+            </dap-ds-select>
+            <dap-ds-input
               id="email"
               label="E-mail cím"
               name="email"
               value={form.email}
               feedbackType="negative"
               feedback={errors?.email?.toString()}
-              onDdsChange={(emailValue: string) => {
+              on:dds-change={(e: InputEvent) => {
+                const emailValue = e.detail.value;
                 setForm({email: emailValue});
                 validateEmailPattern('email', 'Az e-mail cím formátuma helytelen vagy üres!');
               }}
-            ></DapDSInputSolid>
-            <DapDSDatePickerSolid
+            ></dap-ds-input>
+            <dap-ds-datepicker
               id="birthDate"
               label="Születési dátum"
               name="datepicker"
               value={form.birthDate}
               feedbackType="negative"
               feedback={errors?.birthDate?.toString()}
-              onDdsChange={(birthDateValue: string) => {
+              on:dds-change={(e: InputEvent) => {
+                const birthDateValue = e.detail.value;
                 setForm({birthDate: birthDateValue});
                 validateRequired('birthDate', 'Add meg a születési dátumod!');
               }}
               >
-            </DapDSDatePickerSolid>
-            <DapDSComboboxSolid
+            </dap-ds-datepicker>
+            <dap-ds-combobox
               id="product"
               label="Kedvenc terméked"
               name="product"
               value={form.product}
               feedbackType="negative"
-              onDdsChange={(productValue: string) => setForm({product: productValue})}
-              onDdsInput={
-                (productFilter: string) => {
+              on:dds-change={(e: InputEvent) => {
+                const productValue = e.detail.value;
+                setForm({product: productValue})
+              }}
+              on:dds-input={
+                (e: NestedInputEvent) => {
+                  const productFilter = e.detail.input;
                   if (productFilter) {
                     clearTimeout(timeOutId);
                     timeOutId = setTimeout(() => {
@@ -183,46 +199,51 @@ function App() {
               placeholder="Válassz egy terméket">
                 <For each={products()}>
                   {(item, _index) => (
-                    <DapDSOptionItemSolid key={item.id} value={item.id as unknown as string} label={item.title}>
+                    <dap-ds-option-item key={item.id} value={item.id as unknown as string} label={item.title}>
                     {item.title}
-                  </DapDSOptionItemSolid>
+                  </dap-ds-option-item>
                   )}
                 </For>
-            </DapDSComboboxSolid>
-            <DapDSInputSolid
+            </dap-ds-combobox>
+            <dap-ds-input
               id="subject"
               label="Tárgy"
               name="subject"
               value={form.subject}
               feedbackType="negative"
-              onDdsChange={(subjectValue: string) => setForm({subject: subjectValue})}
-            ></DapDSInputSolid>
-            <DapDSTextareaSolid
+              on:dds-change={(e: InputEvent) => {
+                const subjectValue = e.detail.value;
+                setForm({subject: subjectValue})
+              }}
+            ></dap-ds-input>
+            <dap-ds-textarea
               id="message"
               label="Üzenet"
               name="message"
               value={form.message}
               feedbackType="negative"
               feedback={errors?.message?.toString()}
-              onDdsChange={(messageValue: string) => {
+              on:dds-change={(e: InputEvent) => {
+                const messageValue = e.detail.value;
                 setForm({message: messageValue});
                 validateRequired('message', 'Írd be az üzeneted!');
               }}
-            ></DapDSTextareaSolid>
-            <DapDSCheckboxSolid
+            ></dap-ds-textarea>
+            <dap-ds-checkbox
               id="consent"
               label="Megnyitottam, elolvastam és elfogadom az Adatkezelési tájékoztatót."
               name="consent"
               feedbackType="negative"
               checked={form.consent}
               feedback={errors?.consent?.toString()}
-              onDdsChange={(consentValue: boolean) => {
+              on:dds-change={(e: CheckedInputEvent) => {
+                const consentValue = e.detail.checked;
                 setForm({consent: consentValue});
                 validateRequired('consent', 'Fogadd el az Adatkezelési tájékoztatót!');
             }}
-            ></DapDSCheckboxSolid>
-            <DapDSButtonSolid onClick={(e: Event) => onSubmit(e)} htmlType="submit">Küldés</DapDSButtonSolid>
-          </DapDSStackSolid>
+            ></dap-ds-checkbox>
+            <dap-ds-button onClick={(e: Event) => onSubmit(e)} htmlType="submit">Küldés</dap-ds-button>
+          </dap-ds-stack>
           <div>
               <h3>Form Data:</h3>
               <pre>{JSON.stringify(form, null, 2)}</pre>
