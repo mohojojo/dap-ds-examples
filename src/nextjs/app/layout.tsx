@@ -2,8 +2,8 @@
 import localFont from 'next/font/local'
 import { ReactNode, Suspense } from 'react'
 import 'dap-design-system/dist/light.theme.css'
-
 import ClientApplication from '@/app/clientApplication'
+import TanstackProvider from "./Providers";
 
 const inter = localFont({
   src: '../public/fonts/InterVariable.woff2',
@@ -25,14 +25,16 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ClientApplication>
-          <Suspense>
-            <dap-ds-snackbar></dap-ds-snackbar>
-            <main className="main" id="root">
-              {children}
-            </main>
-          </Suspense>
-        </ClientApplication>
+        <TanstackProvider>
+          <ClientApplication>
+            <Suspense>
+              <dap-ds-snackbar></dap-ds-snackbar>
+              <main className="main" id="root">
+                {children}
+              </main>
+            </Suspense>
+          </ClientApplication>
+        </TanstackProvider>
       </body>
     </html>
   )

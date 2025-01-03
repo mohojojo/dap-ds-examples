@@ -3,14 +3,40 @@
 
 import { Controller, useForm } from 'react-hook-form';
 import './globals.css';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+
+export type Product = {
+  id: number;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+}
 
 export default function Home() {
+  let timeOutId = 0;
+
   const {
     control,
     handleSubmit,
     setValue,
     formState: { errors },
   } = useForm()
+
+  const [filter, setFilter] = useState('')
+
+  const query = useQuery({
+    queryKey: ['products', filter],
+    queryFn: () => getProducts(filter),
+  })
+
+  const getProducts = async(filter: string) => {
+    const response = await fetch(`https://dummyjson.com/products/search?q=${filter}`)
+    const json = await response.json()
+
+    return json.products.filter((item: unknown) => item.title.toLowerCase().startsWith(filter.toLowerCase()))
+  }
 
   const onSubmit = () => {
     if (window.showDapSnackbar) {
@@ -131,7 +157,7 @@ export default function Home() {
                       setError('datepicker', { message: 'Nem választható dátum!' })
                     }
                   }}
-                  ondds-validdate={(e) => {
+                  ondds-validdate={() => {
                     setError('datepicker', { message: '' })
                   }}
                 >
@@ -145,14 +171,46 @@ export default function Home() {
                 },
               }}
             />
-          <dap-ds-combobox
-            label="Termék megnevezés"
-            required
-            sync
-            feedbackType="negative"
-            placeholder="Válassz egy terméket"
-          >
-          </dap-ds-combobox>
+            <Controller
+              name="product"
+              control={control}
+              render={({ field: { value } }) => (
+                <dap-ds-combobox
+                  id="product"
+                  label="Kedvenc terméked"
+                  name="product"
+                  value={value}
+                  feedback={errors?.product?.message?.toString()}
+                  feedbackType="negative"
+                  ondds-change={e => {
+                    setValue('product', e.detail?.value)
+                  }}
+                  ondds-input={e => {
+                    const productFilter = e?.detail?.input;
+                    if (productFilter) {
+                      clearTimeout(timeOutId);
+                      timeOutId = setTimeout(() => {
+                        setFilter(productFilter);
+                      }, 300);
+                    }
+                  }}
+                  sync
+                  placeholder="Válassz egy terméket">
+                  {query.data?.map((item: Product) => (
+                    <dap-ds-option-item key={item.id} value={item.id} label={item.title}>
+                      {item.title}
+                    </dap-ds-option-item>
+                  ))}
+                </dap-ds-combobox>
+              )}
+              rules={{
+                validate: {
+                  required: value => {
+                    if (!value) return 'Válassz egy terméket!'
+                  },
+                },
+              }}
+            />
           <Controller
               name="subject"
               control={control}
