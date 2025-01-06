@@ -19,6 +19,7 @@ declare namespace JSX {
     'dap-ds-option-item': import('dap-design-system/dist/react-types').DapDSOptionItemType
     'dap-ds-select': import('dap-design-system/dist/react-types').DapDSSelectType
     'dap-ds-textarea': import('dap-design-system/dist/react-types').DapDSTextareaType
+    'dap-ds-snackbar': import('dap-design-system/dist/react-types').DapDSSnackbarType
   }
 }
 

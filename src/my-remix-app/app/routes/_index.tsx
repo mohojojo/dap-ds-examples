@@ -19,13 +19,13 @@ export const meta: MetaFunction = () => {
 const DapDSInput = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSInputReact })))
 const DapDSButton = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSButtonReact })))
 const DapDSSnackbar = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSSnackbarReact })))
-const DapDSSelectReact = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSSelectReact })))
-const DapDSOptionItemReact = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSOptionItemReact })))
+const DapDSSelect = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSSelectReact })))
+const DapDSOptionItem = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSOptionItemReact })))
 const DapDSDatePicker = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSDatePickerReact })))
-const DapDSComboboxReact = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSComboboxReact })))
-const DapDSTextareaReact = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSTextareaReact })))
-const DapDSStackReact = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSStackReact })))
-const DapDSCheckboxReact = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSCheckboxReact })))
+const DapDSCombobox = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSComboboxReact })))
+const DapDSTextarea = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSTextareaReact })))
+const DapDSStack = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSStackReact })))
+const DapDSCheckbox = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSCheckboxReact })))
 
 const schema = zod.object({
   name: zod.string().min(1, { message: "Add meg a neved!" }),
@@ -44,17 +44,17 @@ export type Product = {
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const { errors, data, receivedValues: defaultValues } =
+  const { errors, data, receivedValues } =
     await getValidatedFormData<FormData>(request, resolver);
   if (errors) {
-    // The keys "errors" and "defaultValues" are picked up automatically by useRemixForm
+
     console.log(errors);
-    return Response.json({ errors, defaultValues });
+    return Response.json({ errors, receivedValues });
   }
 
   // Do something with the data
-  console.log(data);
-  return Response.json({ data });
+  console.log(receivedValues);
+  return Response.json({ data: receivedValues });
 };
 
 export default function Index() {
@@ -95,6 +95,7 @@ export default function Index() {
   const actionData = useActionData<typeof action>()
 
   useEffect(() => {
+    console.log(actionData)
     if(actionData && !actionData.errors) {
       if (window.showDapSnackbar) {
         window.showDapSnackbar('Gratulálunk! Minden mező helyes!', {
@@ -116,220 +117,227 @@ export default function Index() {
           <>
             <DapDSSnackbar></DapDSSnackbar>
             <Form noValidate onSubmit={handleSubmit} method="POST" navigate={false} fetcherKey="my-key">
-              <DapDSStackReact>
-              <Controller
-                name="name"
-                control={control}
-                render={({ field: { value } }) => (
-                  <DapDSInput
-                    id="name"
-                    label="Teljes név"
-                    required
-                    name="name"
-                    value={value}
-                    feedback={errors?.name?.message?.toString()}
-                    feedbackType="negative"
-                    onDdsChange={e => {
-                      setValue('name', e.detail.value, { shouldValidate: true })
-                    }}></DapDSInput>
-                )}
-              />
-              <Controller
-                name="prefix"
-                control={control}
-                render={({ field: { value } }) => (
-                  <DapDSSelectReact
-                    id="prefix"
-                    label="Megnevezés"
-                    name="prefix"
-                    value={value}
-                    feedback={errors?.prefix?.message?.toString()}
-                    feedbackType="negative"
-                    onDdsChange={e => {
-                      setValue('prefix', e.detail.value)
-                    }}>
-                      <DapDSOptionItemReact value="mr">Úr</DapDSOptionItemReact>
-                      <DapDSOptionItemReact value="mrs">Hölgy</DapDSOptionItemReact>
-                      <DapDSOptionItemReact value="miss">Kisasszony</DapDSOptionItemReact>
-                  </DapDSSelectReact>
-                )}
-                rules={{
-                  validate: {
-                    required: value => {
-                      if (!value) return 'Válassz megnevezést!'
+              <DapDSStack>
+                <Controller
+                  name="name"
+                  control={control}
+                  render={({ field: { value } }) => (
+                    <DapDSInput
+                      id="name"
+                      label="Teljes név"
+                      required
+                      name="name"
+                      value={value}
+                      feedback={errors?.name?.message?.toString()}
+                      feedbackType="negative"
+                      onDdsChange={e => {
+                        setValue('name', e.detail.value, { shouldValidate: true })
+                      }}></DapDSInput>
+                  )}
+                  rules={{
+                    validate: {
+                      required: value => {
+                        if (!value) return 'Írd be a teljes neved!'
+                      },
                     },
-                  },
-                }}
-              />
-              <Controller
-                name="email"
-                control={control}
-                render={({ field: { value } }) => (
-                  <DapDSInput
-                    id="email"
-                    label="E-mail cím"
-                    name="email"
-                    value={value}
-                    type="email"
-                    feedback={errors?.email?.message?.toString()}
-                    feedbackType="negative"
-                    onDdsChange={e => {
-                      setValue('email', e.detail.value, { shouldValidate: true })
-                    }}></DapDSInput>
-                )}
-                rules={{
-                  validate: {
-                    required: value => {
-                      if (!value) return 'Add meg az e-mail címed!'
+                  }}
+                />
+                <Controller
+                  name="prefix"
+                  control={control}
+                  render={({ field: { value } }) => (
+                    <DapDSSelect
+                      id="prefix"
+                      label="Megnevezés"
+                      name="prefix"
+                      value={value}
+                      feedback={errors?.prefix?.message?.toString()}
+                      feedbackType="negative"
+                      onDdsChange={e => {
+                        setValue('prefix', e.detail.value)
+                      }}>
+                        <DapDSOptionItem value="mr">Úr</DapDSOptionItem>
+                        <DapDSOptionItem value="mrs">Hölgy</DapDSOptionItem>
+                        <DapDSOptionItem value="miss">Kisasszony</DapDSOptionItem>
+                    </DapDSSelect>
+                  )}
+                  rules={{
+                    validate: {
+                      required: value => {
+                        if (!value) return 'Válassz megnevezést!'
+                      },
                     },
-                    pattern: value => {
-                      if (!value.match(/[^@\s]+@[^@\s]+\.[^@\s]+/))
-                        return 'Az e-mail cím formátuma helytelen!'
+                  }}
+                />
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field: { value } }) => (
+                    <DapDSInput
+                      id="email"
+                      label="E-mail cím"
+                      name="email"
+                      value={value}
+                      type="email"
+                      feedback={errors?.email?.message?.toString()}
+                      feedbackType="negative"
+                      onDdsChange={e => {
+                        setValue('email', e.detail.value, { shouldValidate: true })
+                      }}></DapDSInput>
+                  )}
+                  rules={{
+                    validate: {
+                      required: value => {
+                        if (!value) return 'Add meg az e-mail címed!'
+                      },
+                      pattern: value => {
+                        if (!value.match(/[^@\s]+@[^@\s]+\.[^@\s]+/))
+                          return 'Az e-mail cím formátuma helytelen!'
+                      },
                     },
-                  },
-                }}
-              />
-              <Controller
-                name="datepicker"
-                control={control}
-                render={({ field: { value } }) => (
-                  <DapDSDatePicker
-                    id="datepicker"
-                    label="Születési dátum"
-                    description="Add meg a születési dátumod!"
-                    name="datepicker"
-                    value={value}
-                    feedback={errors?.datepicker?.message?.toString()}
-                    feedbackType={errors?.datepicker ? 'negative' : 'positive'}
-                    onDdsChange={(e) => {
-                      console.log(e)
-                      setValue('datepicker', e.detail.value, { shouldValidate: true })}
-                    }
-                    onDdsInvalidDate={(e) => {
-                      console.log(e)
-                      if (e.detail.type === 'invalid') {
-                        setError('datepicker', { message: `Érvénytelen dátum: ${dayjs.Ls[dayjs.locale()].formats.L}` })
+                  }}
+                />
+                <Controller
+                  name="datepicker"
+                  control={control}
+                  render={({ field: { value } }) => (
+                    <DapDSDatePicker
+                      id="datepicker"
+                      label="Születési dátum"
+                      description="Add meg a születési dátumod!"
+                      name="datepicker"
+                      value={value}
+                      feedback={errors?.datepicker?.message?.toString()}
+                      feedbackType={errors?.datepicker ? 'negative' : 'positive'}
+                      onDdsChange={(e) => {
+                        console.log(e)
+                        setValue('datepicker', e.detail.value, { shouldValidate: true })}
                       }
+                      onDdsInvalidDate={(e) => {
+                        console.log(e)
+                        if (e.detail.type === 'invalid') {
+                          setError('datepicker', { message: `Érvénytelen dátum: ${dayjs.Ls[dayjs.locale()].formats.L}` })
+                        }
 
-                      if (e.detail.type === 'out-of-range') {
-                        setError('datepicker', { message: 'Nem választható dátum!' })
-                      }
-                    }}
-                    onDdsValidDate={(e: unknown) => {
-                      console.log(e)
-                      setError('datepicker', { message: '' })
-                    }}
-                  >
-                  </DapDSDatePicker>
-                )}
-                rules={{
-                  validate: {
-                    required: value => {
-                      if (!value) return 'Add meg a születési dátumod!'
+                        if (e.detail.type === 'out-of-range') {
+                          setError('datepicker', { message: 'Nem választható dátum!' })
+                        }
+                      }}
+                      onDdsValidDate={(e: unknown) => {
+                        console.log(e)
+                        setError('datepicker', { message: '' })
+                      }}
+                    >
+                    </DapDSDatePicker>
+                  )}
+                  rules={{
+                    validate: {
+                      required: value => {
+                        if (!value) return 'Add meg a születési dátumod!'
+                      },
                     },
-                  },
-                }}
-              />
-              <Controller
-                name="product"
-                control={control}
-                render={({ field: { value } }) => (
-                  <DapDSComboboxReact
-                    id="product"
-                    label="Kedvenc terméked"
-                    name="product"
-                    value={value}
-                    feedback={errors?.product?.message?.toString()}
-                    feedbackType="negative"
-                    onDdsChange={e => {
-                      setValue('product', e.detail?.value)
-                    }}
-                    onDdsInput={e => {
-                      setFilter(e.detail?.input)
-                    }}
-                    sync
-                    placeholder="Válassz egy terméket">
-                    {query.data?.map((item: Product) => (
-                      <DapDSOptionItemReact key={item.id} value={item.id} label={item.title}>
-                        {item.title}
-                      </DapDSOptionItemReact>
-                    ))}
-                  </DapDSComboboxReact>
-                )}
-                rules={{
-                  validate: {
-                    required: value => {
-                      if (!value) return 'Válassz egy terméket!'
+                  }}
+                />
+                <Controller
+                  name="product"
+                  control={control}
+                  render={({ field: { value } }) => (
+                    <DapDSCombobox
+                      id="product"
+                      label="Kedvenc terméked"
+                      name="product"
+                      value={value}
+                      feedback={errors?.product?.message?.toString()}
+                      feedbackType="negative"
+                      onDdsChange={e => {
+                        setValue('product', e.detail?.value)
+                      }}
+                      onDdsInput={e => {
+                        setFilter(e.detail?.input)
+                      }}
+                      sync
+                      placeholder="Válassz egy terméket">
+                      {query.data?.map((item: Product) => (
+                        <DapDSOptionItem key={item.id} value={item.id} label={item.title}>
+                          {item.title}
+                        </DapDSOptionItem>
+                      ))}
+                    </DapDSCombobox>
+                  )}
+                  rules={{
+                    validate: {
+                      required: value => {
+                        if (!value) return 'Válassz egy terméket!'
+                      },
                     },
-                  },
-                }}
-              />
-              <Controller
-                name="subject"
-                control={control}
-                render={({ field: { value } }) => (
-                  <DapDSInput
-                    id="subject"
-                    label="Tárgy"
-                    optional
-                    optionalLabel="(Nem kötelező)"
-                    name="subject"
-                    value={value}
-                    onDdsChange={e => {
-                      setValue('subject', e.detail.value)
-                    }}></DapDSInput>
-                )}
-              />
-              <Controller
-                name="message"
-                control={control}
-                render={({ field: { value } }) => (
-                  <DapDSTextareaReact
-                    id="message"
-                    label="Üzenet"
-                    name="message"
-                    value={value}
-                    feedback={errors?.message?.message?.toString()}
-                    feedbackType="negative"
-                    onDdsChange={e => {
-                      setValue('message', e.detail.value, { shouldValidate: true })
-                    }}></DapDSTextareaReact>
-                )}
-                rules={{
-                  validate: {
-                    required: value => {
-                      if (!value) return 'Írd be az üzeneted!'
+                  }}
+                />
+                <Controller
+                  name="subject"
+                  control={control}
+                  render={({ field: { value } }) => (
+                    <DapDSInput
+                      id="subject"
+                      label="Tárgy"
+                      optional
+                      optionalLabel="(Nem kötelező)"
+                      name="subject"
+                      value={value}
+                      onDdsChange={e => {
+                        setValue('subject', e.detail.value)
+                      }}></DapDSInput>
+                  )}
+                />
+                <Controller
+                  name="message"
+                  control={control}
+                  render={({ field: { value } }) => (
+                    <DapDSTextarea
+                      id="message"
+                      label="Üzenet"
+                      name="message"
+                      value={value}
+                      feedback={errors?.message?.message?.toString()}
+                      feedbackType="negative"
+                      onDdsChange={e => {
+                        setValue('message', e.detail.value, { shouldValidate: true })
+                      }}></DapDSTextarea>
+                  )}
+                  rules={{
+                    validate: {
+                      required: value => {
+                        if (!value) return 'Írd be az üzeneted!'
+                      },
                     },
-                  },
-                }}
-              />
-              <Controller
-                name="consent"
-                control={control}
-                render={({ field: { value } }) => (
-                  <DapDSCheckboxReact
-                    id="consent"
-                    label="Megnyitottam, elolvastam és elfogadom az Adatkezelési tájékoztatót."
-                    name="consent"
-                    checked={value}
-                    feedback={errors?.consent?.message?.toString()}
-                    feedbackType="negative"
-                    onDdsChange={e => {
-                      setValue('consent', e.detail.checked, {
-                        shouldValidate: true,
-                      })
-                    }}></DapDSCheckboxReact>
-                )}
-                rules={{
-                  validate: {
-                    required: value => {
-                      if (!value) return 'Fogadd el az Adatkezelési tájékoztatót!'
+                  }}
+                />
+                <Controller
+                  name="consent"
+                  control={control}
+                  render={({ field: { value } }) => (
+                    <DapDSCheckbox
+                      id="consent"
+                      label="Megnyitottam, elolvastam és elfogadom az Adatkezelési tájékoztatót."
+                      name="consent"
+                      checked={value}
+                      feedback={errors?.consent?.message?.toString()}
+                      feedbackType="negative"
+                      onDdsChange={e => {
+                        setValue('consent', e.detail.checked, {
+                          shouldValidate: true,
+                        })
+                      }}></DapDSCheckbox>
+                  )}
+                  rules={{
+                    validate: {
+                      required: value => {
+                        if (!value) return 'Fogadd el az Adatkezelési tájékoztatót!'
+                      },
                     },
-                  },
-                }}
-              />
-            <DapDSButton htmlType="submit">Submit</DapDSButton>
-            </DapDSStackReact>
+                  }}
+                />
+              <DapDSButton htmlType="submit">Submit</DapDSButton>
+            </DapDSStack>
           </Form>
         </>
       }

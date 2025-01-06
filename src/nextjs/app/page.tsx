@@ -38,7 +38,8 @@ export default function Home() {
     return json.products.filter((item: unknown) => item.title.toLowerCase().startsWith(filter.toLowerCase()))
   }
 
-  const onSubmit = () => {
+  const onSubmit = (data: any) => {
+    console.log('data', data)
     if (window.showDapSnackbar) {
       window.showDapSnackbar('Gratulálunk! Minden mező helyes!', {
         duration: 4500,

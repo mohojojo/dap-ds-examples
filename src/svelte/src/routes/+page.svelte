@@ -4,14 +4,14 @@
 		import { products } from '../store'
 
     type FormErrors = {
-        name?: string;
-				prefix?: string;
-        email?: string;
-				birthdate?: string;
-				product?: string;
-				subject?: string;
-        message?: string;
-				consent?: string
+			name?: string;
+			prefix?: string;
+			email?: string;
+			birthdate?: string;
+			product?: string;
+			subject?: string;
+			message?: string;
+			consent?: string
     };
 
     onMount(async () => {
@@ -43,7 +43,6 @@
 				if (!consent) errors.consent = 'Fogadd el az Adatkezelési tájékoztatót!';
     }
 
-
 		const getProducts = async(filter: string) => {
 			const response = await fetch(`https://dummyjson.com/products/search?q=${filter}`)
 			const json = await response.json()
@@ -65,7 +64,6 @@
             })
         }
     }
-    
 </script>
 
 <dap-ds-snackbar></dap-ds-snackbar>
