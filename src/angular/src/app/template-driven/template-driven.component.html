@@ -1,0 +1,126 @@
+<h2>Template driven form</h2>
+
+<form #form="ngForm">
+    <dap-ds-stack>
+      <dap-ds-input
+          [(ngModel)]="formData.fullName"
+          #fullNameModel="ngModel"
+          name="fullName"
+          required
+          feedbackType="negative"
+          label="Teljes név"
+      ></dap-ds-input>
+      @if (submitted || fullNameModel.touched) {
+        @if (fullNameModel.errors?.['required']) {
+          <p class="error">
+            Add meg a teljes neved!
+          </p>
+        }
+      }
+      <dap-ds-select
+        [(ngModel)]="formData.title"
+        #titleModel="ngModel"
+        name="title"
+        label="Megnevezés"
+        required
+        feedbackType="negative"
+      >
+        <dap-ds-option-item value="mr">Úr</dap-ds-option-item>
+        <dap-ds-option-item value="mrs">Hölgy</dap-ds-option-item>
+        <dap-ds-option-item value="miss">Kisasszony</dap-ds-option-item>
+      </dap-ds-select>
+      @if (submitted || titleModel.touched) {
+        @if (titleModel.errors?.['required']) {
+          <p class="error">
+            Válassz megnevezést!
+          </p>
+        }
+      }
+      <dap-ds-input
+          [(ngModel)]="formData.email"
+          #emailModel="ngModel"
+          name="email"
+          required
+          email
+          label="E-mail cím"
+      ></dap-ds-input>
+      @if (submitted || emailModel.touched) {
+        @if (emailModel.hasError('required')) {
+          <p class="error">
+            Add meg az e-mail címed!
+          </p>
+        }
+        @if (emailModel.hasError('email')) {
+          <p class="error">
+            Az e-mail cím formátuma helytelen!
+          </p>
+        }
+      }
+      <dap-ds-datepicker
+          [(ngModel)]="formData.birthDate"
+          #birthDateModel="ngModel"
+          name="birthDate"
+          required
+          label="Születési dátum"
+          description="Add meg a születési dátumod!"
+      ></dap-ds-datepicker>
+      @if (submitted || birthDateModel.touched) {
+        @if (birthDateModel.errors?.['required']) {
+          <p class="error">
+            Add meg a születési dátumod!
+          </p>
+        }
+      }
+    <dap-ds-combobox
+      [(ngModel)]="formData.product"
+      #productModel="ngModel"
+      name="product"
+      label="Termék megnevezés"
+      required
+      sync
+      placeholder="Válassz egy terméket"
+    >
+      @for (product of products; track product.id) {
+        <dap-ds-option-item value="{{ product.id }}" label="{{ product.title }}">{{ product.title }}</dap-ds-option-item>
+      }
+    </dap-ds-combobox>
+
+      <dap-ds-input
+          [(ngModel)]="formData.subject"
+          name="subject"
+          label="Tárgy"
+          optional
+          optionalLabel="(Nem kötelező)"
+      ></dap-ds-input>
+      <dap-ds-textarea
+          [(ngModel)]="formData.message"
+          #messageModel="ngModel"
+          name="message"
+          required
+          label="Üzenet"
+      ></dap-ds-textarea>
+      @if (submitted || messageModel.touched) {
+        @if (messageModel.errors?.['required']) {
+          <p class="error">
+            Írd be az üzeneted!
+          </p>
+        }
+      }
+      <dap-ds-checkbox
+          [(ngModel)]="formData.tnc"
+          #tncModel="ngModel"
+          name="tnc"
+          required
+          label="Megnyitottam, elolvastam és elfogadom az Adatkezelési tájékoztatót."
+      ></dap-ds-checkbox>
+      @if (submitted || tncModel.touched) {
+        @if (!formData.tnc) {
+          <p class="error">
+            Fogadd el az Adatkezelési tájékoztatót!
+          </p>
+        }
+      }
+    </dap-ds-stack>
+
+    <dap-ds-button (click)="onSubmit()">Submit</dap-ds-button>
+</form>

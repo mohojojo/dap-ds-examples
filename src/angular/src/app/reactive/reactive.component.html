@@ -1,0 +1,76 @@
+<h2>Reactive form</h2>
+
+<form [formGroup]="myForm">
+    <dap-ds-stack>
+        <dap-ds-input
+            formControlName="fullName"
+            required
+            [feedback]="getFullNameValidation()"
+            feedbackType="negative"
+            label="Teljes név"
+        ></dap-ds-input>
+        <dap-ds-select
+          formControlName="title"
+          label="Megnevezés"
+          required
+          [feedback]="getTitleValidation()"
+          feedbackType="negative"
+        >
+          <dap-ds-option-item value="mr">Úr</dap-ds-option-item>
+          <dap-ds-option-item value="mrs">Hölgy</dap-ds-option-item>
+          <dap-ds-option-item value="miss">Kisasszony</dap-ds-option-item>
+        </dap-ds-select>
+        <dap-ds-input
+            formControlName="email"
+            required
+            label="E-mail cím"
+            [feedback]="getEmailValidation()"
+            feedbackType="negative"
+        ></dap-ds-input>
+        <dap-ds-datepicker
+            appDatepickerAccessor
+            formControlName="birthDate"
+            [feedback]="getBirthDateValidation()"
+            feedbackType="negative"
+            required
+            label="Születési dátum"
+            description="Add meg a születési dátumod!"
+        ></dap-ds-datepicker>
+        <dap-ds-combobox
+          formControlName="product"
+          label="Termék megnevezés"
+          required
+          sync
+          [feedback]="getProductValidation()"
+          feedbackType="negative"
+          getProductValidation
+          placeholder="Válassz egy terméket"
+        >
+          @for (product of products; track product.id) {
+            <dap-ds-option-item value="{{ product.id }}" label="{{ product.title }}">{{ product.title }}</dap-ds-option-item>
+          }
+        </dap-ds-combobox>
+        <dap-ds-input
+            formControlName="subject"
+            label="Tárgy"
+            optional
+            optionalLabel="(Nem kötelező)"
+        ></dap-ds-input>
+        <dap-ds-textarea
+            formControlName="message"
+            [feedback]="getMessageValidation()"
+            required
+            feedbackType="negative"
+            label="Üzenet"
+        ></dap-ds-textarea>
+        <dap-ds-checkbox
+            formControlName="tnc"
+            [feedback]="getTncValidation()"
+            required
+            feedbackType="negative"
+            label="Megnyitottam, elolvastam és elfogadom az Adatkezelési tájékoztatót."
+        ></dap-ds-checkbox>
+    </dap-ds-stack>
+
+    <dap-ds-button (click)="onSubmit()">Küldés</dap-ds-button>
+</form>
