@@ -21,6 +21,5 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
-, "../svelte/src/store.ts"  ]
+    "src"  ]
 }
