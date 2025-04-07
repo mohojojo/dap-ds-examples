@@ -25,6 +25,7 @@ declare namespace React {
         'dap-ds-content-switcher': import('dap-design-system/dist/react-types').DapDSContentSwitcherType
         'dap-ds-copybox-input': import('dap-design-system/dist/react-types').DapDSCopyBoxInputType
         'dap-ds-dap-badge': import('dap-design-system/dist/react-types').DapDSBadgeType
+        'dap-ds-datatable': import('dap-design-system/dist/react-types').DapDSDatatableType
         'dap-ds-datepicker': import('dap-design-system/dist/react-types').DapDSDatePickerType
         'dap-ds-divider': import('dap-design-system/dist/react-types').DapDSDividerType
         'dap-ds-feedback': import('dap-design-system/dist/react-types').DapDSFeedbackType

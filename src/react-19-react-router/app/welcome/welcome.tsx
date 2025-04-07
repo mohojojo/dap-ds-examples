@@ -1,50 +1,140 @@
-import logoDark from "./logo-dark.svg";
-import logoLight from "./logo-light.svg";
+"use client"
+
+import type { ExtendedColumnDef, RowSelectionState } from "dap-design-system"
+import { html } from "lit-html"
+import { useQuery } from "@tanstack/react-query"
+import { useState } from "react"
+
+type Row = {
+  title: string
+  category: string
+  price: string
+  rating: string
+}
 
 export function Welcome() {
+  const { data = [] } = useQuery({
+    queryKey: ["products"],
+    queryFn: async () => {
+      const response = await fetch(
+        "https://dummyjson.com/products?limit=200&skip=0"
+      )
+      const data = await response.json()
+      return data.products
+    },
+  })
+
+  const rowSelection = {
+    "1": true,
+    "2": true,
+    "3": true,
+  }
+
+  const columns: ExtendedColumnDef<Row>[] = [
+    {
+      accessorKey: "title",
+      cell: ({ getValue, row, column, table }) => {
+        const initialValue = getValue() as string
+        const span = document.createElement("span")
+        span.textContent = initialValue
+        span.addEventListener("click", () => {
+          const input = document.createElement("dap-ds-input")
+          input.value = span.textContent
+          input.addEventListener("dds-blur", () => {
+            console.log("dds-blur", input.value, row, column, table)
+
+            // optimistic update
+            span.textContent = input.value
+            input.replaceWith(span)
+
+            // call the update
+          })
+          input.addEventListener("dds-keydown", (event) => {
+            if (event.detail.event.key === "Enter") {
+              input.blur()
+            }
+          })
+
+          // replace the span with the edit input
+          span.replaceWith(input)
+          input.updateComplete.then(() => {
+            console.log("input focus")
+            input.focus()
+          })
+        })
+
+        return span
+      },
+      header: (header) => {
+        return html`<dap-ds-command>
+          <dap-ds-button variant="clean" slot="trigger">Title</dap-ds-button>
+          <dap-ds-command-group label="Sort" exclusive>
+            <dap-ds-command-item
+              value="asc"
+              selectable
+              ?selected=${header.column.getIsSorted() === "asc"}
+              @dds-command-item-click=${() => {
+                if (header.column.getIsSorted() === "asc") {
+                  header.column.clearSorting()
+                } else {
+                  header.column.toggleSorting(false)
+                }
+              }}
+              >Asc</dap-ds-command-item
+            >
+            <dap-ds-command-item
+              value="desc"
+              selectable
+              ?selected=${header.column.getIsSorted() === "desc"}
+              @dds-command-item-click=${() => {
+                if (header.column.getIsSorted() === "desc") {
+                  header.column.clearSorting()
+                } else {
+                  header.column.toggleSorting(true)
+                }
+              }}
+              >Desc</dap-ds-command-item
+            >
+          </dap-ds-command-group>
+          <dap-ds-command-item value="hide">Hide</dap-ds-command-item>
+        </dap-ds-command>`
+      },
+      disableDefaultSorting: true,
+    },
+    {
+      accessorKey: "category",
+      id: "category",
+      cell: (info) => info.getValue(),
+      header: `Category`,
+      headerTextAlign: "right",
+    },
+    {
+      accessorFn: (row) => row.price,
+      id: "price",
+      header: "Price",
+    },
+    {
+      accessorKey: "rating",
+      header: "Rating",
+    },
+  ]
+
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
       <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
-        <dap-ds-button className="p-5">Click me pls!</dap-ds-button>
-        <header className="flex flex-col items-center gap-9">
-          <div className="w-[500px] max-w-[100vw] p-4">
-            <img
-              src={logoLight}
-              alt="React Router"
-              className="block w-full dark:hidden"
-            />
-            <img
-              src={logoDark}
-              alt="React Router"
-              className="hidden w-full dark:block"
-            />
-          </div>
-        </header>
-        <div className="max-w-[300px] w-full space-y-6 px-4">
-          <nav className="rounded-3xl border border-gray-200 p-6 dark:border-gray-700 space-y-4">
-            <p className="leading-6 text-gray-700 dark:text-gray-200 text-center">
-              What&apos;s next?
-            </p>
-            <ul>
-              {resources.map(({ href, text, icon }) => (
-                <li key={href}>
-                  <a
-                    className="group flex items-center gap-3 self-stretch p-3 leading-normal text-blue-700 hover:underline dark:text-blue-500"
-                    href={href}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {icon}
-                    {text}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
+        <dap-ds-datatable
+          columns={columns}
+          data={data}
+          enableRowSelection
+          enableSorting
+          rowSelection={rowSelection}
+          ondds-selection-change={(event: CustomEvent<{ selection: RowSelectionState }>) => {
+            console.log("rowSelection", event.detail.selection)
+          }}
+        ></dap-ds-datatable>
       </div>
     </main>
-  );
+  )
 }
 
 const resources = [
@@ -87,4 +177,4 @@ const resources = [
       </svg>
     ),
   },
-];
+]
