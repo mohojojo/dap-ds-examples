@@ -1,9 +1,14 @@
 "use client"
 
-import type { ExtendedColumnDef, RowSelectionState } from "dap-design-system"
+import type {
+  DdsFileChangeEvent,
+  DdsUploadCompleteEvent,
+  ExtendedColumnDef,
+  RowSelectionState,
+} from "dap-design-system"
 import { html } from "lit-html"
 import { useQuery } from "@tanstack/react-query"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 type Row = {
   title: string
@@ -24,11 +29,11 @@ export function Welcome() {
     },
   })
 
-  const rowSelection = {
-    "1": true,
-    "2": true,
-    "3": true,
-  }
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({
+    1: true,
+    2: true,
+    3: true,
+  })
 
   const columns: ExtendedColumnDef<Row>[] = [
     {
@@ -121,15 +126,43 @@ export function Welcome() {
 
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
-      <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
+      <div className="flex-1 flex flex-col min-h-0">
+        <dap-ds-file-input
+          id="fileInput1"
+          description="File input description"
+          accept=".jpg,.docx,.png,.heic"
+          label="Instant feltöltés sikeresen"
+          name="customFile"
+          autoupload
+          uploadUrl="https://9daf1d71-c24f-4a02-8861-701f8ff4a9c8.mock.pstmn.io/upload/success"
+          tooltip="File tooltip text, right"
+          tooltipPlacement="right"
+          ondds-file-change={(event: DdsFileChangeEvent) => {
+            console.log("file input change", event)
+          }}
+          ondds-upload-complete={(event: DdsUploadCompleteEvent) => {
+            event.detail.item.href = "positive"
+            event.detail.item.download = "false"
+            event.detail.item.feedbackType = "positive"
+            event.detail.item.feedback = "success"
+          }}
+        ></dap-ds-file-input>
+        <dap-ds-file-input-list
+          size="md"
+          for="fileInput1"
+        ></dap-ds-file-input-list>
+
         <dap-ds-datatable
           columns={columns}
           data={data}
+          rowSelection={rowSelection}
           enableRowSelection
           enableSorting
-          rowSelection={rowSelection}
-          ondds-selection-change={(event: CustomEvent<{ selection: RowSelectionState }>) => {
+          ondds-selection-change={(
+            event: CustomEvent<{ selection: RowSelectionState }>
+          ) => {
             console.log("rowSelection", event.detail.selection)
+            setRowSelection(event.detail.selection)
           }}
         ></dap-ds-datatable>
       </div>
