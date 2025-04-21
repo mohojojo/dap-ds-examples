@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "dap-design-system": "^0.16.3",
+    "dap-design-system": "^0.35.2",
     "react-solid-bridge": "^1.0.1",
     "solid-js": "^1.9.3"
   },

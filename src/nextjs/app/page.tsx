@@ -91,6 +91,9 @@ export default function Home() {
                 ondds-change={(e: DdsChangeEvent) => {
                   setValue("name", e.detail.value, { shouldValidate: true })
                 }}
+                ondds-input={(e: DdsInputEvent) => {
+                  console.log(e.detail.input)
+                }}
               ></dap-ds-input>
             )}
             rules={{
@@ -121,6 +124,7 @@ export default function Home() {
                 label="Megnevezés"
                 name="prefix"
                 value={value}
+                autocomplete="off"
                 feedback={errors?.prefix?.message?.toString()}
                 feedbackType="negative"
                 ondds-change={(e: DdsChangeEvent) => {
@@ -223,6 +227,7 @@ export default function Home() {
                 label="Kedvenc terméked"
                 name="product"
                 value={value}
+                autocomplete="off"
                 feedback={errors?.product?.message?.toString()}
                 feedbackType="negative"
                 ondds-change={(e: DdsChangeEvent) => {

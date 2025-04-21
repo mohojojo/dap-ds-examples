@@ -14,7 +14,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "dap-design-system": "^0.16.3",
+    "dap-design-system": "^0.35.2",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5"
   },

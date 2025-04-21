@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@preact-signals/query": "^2.1.1",
-    "dap-design-system": "^0.16.3",
+    "dap-design-system": "^0.35.2",
     "preact": "^10.25.0",
     "react-hook-form": "^7.53.2",
     "react-query": "^3.39.3"
