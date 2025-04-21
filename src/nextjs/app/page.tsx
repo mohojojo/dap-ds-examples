@@ -1,10 +1,15 @@
-// @ts-nocheck
 "use client"
 
 import { Controller, useForm } from "react-hook-form"
 import "./globals.css"
 import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
+import {
+  DdsChangeEvent,
+  DdsInputEvent,
+  DdsInvalidDateEvent,
+} from "dap-design-system"
+import dayjs from "dayjs"
 
 export type Product = {
   id: number
@@ -14,15 +19,27 @@ export type Product = {
   price: number
 }
 
+export type FormData = {
+  name: string
+  prefix: string
+  email: string
+  datepicker: string
+  product: string
+  subject?: string
+  message: string
+  consent: boolean
+}
+
 export default function Home() {
-  let timeOutId = 0
+  let timeOutId: NodeJS.Timeout | number = 0
 
   const {
     control,
     handleSubmit,
     setValue,
+    setError,
     formState: { errors },
-  } = useForm()
+  } = useForm<FormData>()
 
   const [filter, setFilter] = useState("")
 
@@ -37,12 +54,12 @@ export default function Home() {
     )
     const json = await response.json()
 
-    return json.products.filter((item: unknown) =>
+    return json.products.filter((item: Product) =>
       item.title.toLowerCase().startsWith(filter.toLowerCase())
     )
   }
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: FormData) => {
     console.log("data", data)
     if (window.showDapSnackbar) {
       window.showDapSnackbar("Gratulálunk! Minden mező helyes!", {
@@ -71,7 +88,7 @@ export default function Home() {
                 value={value}
                 feedback={errors?.name?.message?.toString()}
                 feedbackType="negative"
-                ondds-change={(e) => {
+                ondds-change={(e: DdsChangeEvent) => {
                   setValue("name", e.detail.value, { shouldValidate: true })
                 }}
               ></dap-ds-input>
@@ -88,10 +105,10 @@ export default function Home() {
             id="number"
             label="Number"
             name="name"
-            ondds-change={(e) => {
+            ondds-change={(e: DdsChangeEvent) => {
               console.log(e.detail.value)
             }}
-            ondds-input={(e) => {
+            ondds-input={(e: DdsInputEvent) => {
               console.log(e.detail.value)
             }}
           ></dap-ds-number-input>
@@ -106,7 +123,7 @@ export default function Home() {
                 value={value}
                 feedback={errors?.prefix?.message?.toString()}
                 feedbackType="negative"
-                ondds-change={(e) => {
+                ondds-change={(e: DdsChangeEvent) => {
                   setValue("prefix", e.detail.value)
                 }}
               >
@@ -135,7 +152,7 @@ export default function Home() {
                 type="email"
                 feedback={errors?.email?.message?.toString()}
                 feedbackType="negative"
-                ondds-change={(e) => {
+                ondds-change={(e: DdsChangeEvent) => {
                   setValue("email", e.detail.value, { shouldValidate: true })
                 }}
               ></dap-ds-input>
@@ -164,12 +181,12 @@ export default function Home() {
                 value={value}
                 feedback={errors?.datepicker?.message?.toString()}
                 feedbackType={errors?.datepicker ? "negative" : "positive"}
-                ondds-change={(e) => {
+                ondds-change={(e: DdsChangeEvent) => {
                   setValue("datepicker", e.detail.value, {
                     shouldValidate: true,
                   })
                 }}
-                ondds-invaliddate={(e) => {
+                ondds-invaliddate={(e: DdsInvalidDateEvent) => {
                   if (e.detail.type === "invalid") {
                     setError("datepicker", {
                       message: `Érvénytelen dátum: ${
@@ -208,10 +225,10 @@ export default function Home() {
                 value={value}
                 feedback={errors?.product?.message?.toString()}
                 feedbackType="negative"
-                ondds-change={(e) => {
+                ondds-change={(e: DdsChangeEvent) => {
                   setValue("product", e.detail?.value)
                 }}
-                ondds-input={(e) => {
+                ondds-input={(e: DdsInputEvent) => {
                   const productFilter = e?.detail?.input
                   if (productFilter) {
                     clearTimeout(timeOutId)
@@ -253,7 +270,7 @@ export default function Home() {
                 optionalLabel="(Nem kötelező)"
                 name="subject"
                 value={value}
-                ondds-change={(e) => {
+                ondds-change={(e: DdsChangeEvent) => {
                   setValue("subject", e.detail.value)
                 }}
               ></dap-ds-input>
@@ -270,7 +287,7 @@ export default function Home() {
                 value={value}
                 feedback={errors?.message?.message?.toString()}
                 feedbackType="negative"
-                ondds-change={(e) => {
+                ondds-change={(e: DdsChangeEvent) => {
                   setValue("message", e.detail.value, { shouldValidate: true })
                 }}
               ></dap-ds-textarea>
@@ -294,7 +311,7 @@ export default function Home() {
                 checked={value}
                 feedback={errors?.consent?.message?.toString()}
                 feedbackType="negative"
-                ondds-change={(e) => {
+                ondds-change={(e: DdsChangeEvent) => {
                   setValue("consent", e.detail.checked, {
                     shouldValidate: true,
                   })
