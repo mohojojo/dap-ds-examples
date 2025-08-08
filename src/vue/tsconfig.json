@@ -1,5 +1,8 @@
 {
   "files": [],
+  "compilerOptions": {
+    "types": ["dayjs"]
+  },
   "references": [
     {
       "path": "./tsconfig.node.json"

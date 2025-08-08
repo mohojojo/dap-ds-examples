@@ -5,6 +5,14 @@ import dayjs from 'dayjs'
 import { useQuery } from 'react-query';
 import { useState } from 'react';
 
+import customParseFormat from 'dayjs/plugin/customParseFormat' // ES 2015
+import localeData from 'dayjs/plugin/localeData'
+import LocalizedFormat from 'dayjs/plugin/localizedFormat'
+
+dayjs.extend(localeData)
+dayjs.extend(LocalizedFormat)
+dayjs.extend(customParseFormat)
+
 function App() {
   const {
     control,
@@ -12,7 +20,18 @@ function App() {
     setValue,
     setError,
     formState: { errors },
-  } = useForm()
+  } = useForm({
+    defaultValues: {
+      name: '',
+      prefix: '',
+      email: '',
+      datepicker: dayjs(),
+      product: '',
+      subject: '',
+      message: '',
+      consent: false,
+    }
+  })
 
   const [filter, setFilter] = useState('')
 

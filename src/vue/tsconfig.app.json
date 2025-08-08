@@ -6,7 +6,8 @@
     "src/**/*.vue",
     "src/**/*.ts",
     "src/**/*.d.ts",
-    "src/types/**/*.d.ts"
+    "src/types/**/*.d.ts",
+    "global.d.ts"
   ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
@@ -16,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "typeRoots": ["./node_modules/@types", "./node_modules/dap-design-system/dist/manifest/types"]
   }
 }

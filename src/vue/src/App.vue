@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import MyForm from './components/MyForm.vue';
+import MyForm from './components/MyForm.vue'
+import DapDesignSystemExample from './components/DapDesignSystemExample.vue'
 </script>
 
 <template>
-  <MyForm></MyForm>
-  <RouterView />
+  <div class="app">
+    <MyForm />
+    <DapDesignSystemExample />
+    <RouterView />
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.app {
+  min-height: 100vh;
+  padding: 2rem;
+}
+</style>

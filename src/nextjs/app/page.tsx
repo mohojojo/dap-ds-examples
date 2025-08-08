@@ -9,7 +9,17 @@ import {
   DdsInputEvent,
   DdsInvalidDateEvent,
 } from "dap-design-system"
-import dayjs from "dayjs"
+import dayjs, { Dayjs } from "dayjs"
+import "dayjs/locale/hu"
+
+import customParseFormat from 'dayjs/plugin/customParseFormat' // ES 2015
+import localeData from 'dayjs/plugin/localeData'
+import LocalizedFormat from 'dayjs/plugin/localizedFormat'
+
+dayjs.extend(localeData)
+dayjs.extend(LocalizedFormat)
+dayjs.extend(customParseFormat)
+
 
 export type Product = {
   id: number
@@ -23,7 +33,7 @@ export type FormData = {
   name: string
   prefix: string
   email: string
-  datepicker: string
+  datepicker: Dayjs
   product: string
   subject?: string
   message: string
@@ -39,7 +49,18 @@ export default function Home() {
     setValue,
     setError,
     formState: { errors },
-  } = useForm<FormData>()
+  } = useForm<FormData>({
+    defaultValues: {
+      name: "",
+      prefix: "",
+      email: "",
+      datepicker: dayjs(),
+      product: "",
+      subject: "",
+      message: "",
+      consent: false,
+    },
+  })
 
   const [filter, setFilter] = useState("")
 
@@ -75,6 +96,47 @@ export default function Home() {
 
   return (
     <div>
+      <button
+        onClick={() => {
+          setValue("datepicker", dayjs())
+        }}
+      >
+        Küldés
+      </button>
+
+      <dap-ds-datepicker
+        id="datepicker"
+        label="Születési dátum"
+        description="Add meg a születési dátumod!"
+        name="datepicker"
+        value={dayjs()}
+        locale="hu"
+        feedback={errors?.datepicker?.message?.toString()}
+        feedbackType={errors?.datepicker ? "negative" : "positive"}
+        ondds-change={(e: DdsChangeEvent) => {
+          setValue("datepicker", e.detail.value, {
+            shouldValidate: true,
+          })
+        }}
+        ondds-invaliddate={(e: DdsInvalidDateEvent) => {
+          if (e.detail.type === "invalid") {
+            setError("datepicker", {
+              message: `Érvénytelen dátum: ${
+                dayjs.Ls[dayjs.locale()].formats.L
+              }`,
+            })
+          }
+
+          if (e.detail.type === "out-of-range") {
+            setError("datepicker", {
+              message: "Nem választható dátum!",
+            })
+          }
+        }}
+        ondds-validdate={() => {
+          setError("datepicker", { message: "" })
+        }}
+      ></dap-ds-datepicker>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <dap-ds-stack>
           <Controller
@@ -183,6 +245,7 @@ export default function Home() {
                 description="Add meg a születési dátumod!"
                 name="datepicker"
                 value={value}
+                locale="hu"
                 feedback={errors?.datepicker?.message?.toString()}
                 feedbackType={errors?.datepicker ? "negative" : "positive"}
                 ondds-change={(e: DdsChangeEvent) => {
