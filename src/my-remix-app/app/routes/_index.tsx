@@ -16,16 +16,16 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-const DapDSInput = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSInputReact })))
-const DapDSButton = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSButtonReact })))
-const DapDSSnackbar = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSSnackbarReact })))
-const DapDSSelect = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSSelectReact })))
-const DapDSOptionItem = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSOptionItemReact })))
-const DapDSDatePicker = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSDatePickerReact })))
-const DapDSCombobox = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSComboboxReact })))
-const DapDSTextarea = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSTextareaReact })))
-const DapDSStack = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSStackReact })))
-const DapDSCheckbox = lazy(async () => await import('dap-design-system/dist/react').then(module => ({ default: module.DapDSCheckboxReact })))
+const DapDSInput = lazy(async () => await import('dap-design-system/react').then(module => ({ default: module.DapDSInputReact })))
+const DapDSButton = lazy(async () => await import('dap-design-system/react').then(module => ({ default: module.DapDSButtonReact })))
+const DapDSSnackbar = lazy(async () => await import('dap-design-system/react').then(module => ({ default: module.DapDSSnackbarReact })))
+const DapDSSelect = lazy(async () => await import('dap-design-system/react').then(module => ({ default: module.DapDSSelectReact })))
+const DapDSOptionItem = lazy(async () => await import('dap-design-system/react').then(module => ({ default: module.DapDSOptionItemReact })))
+const DapDSDatePicker = lazy(async () => await import('dap-design-system/react').then(module => ({ default: module.DapDSDatePickerReact })))
+const DapDSCombobox = lazy(async () => await import('dap-design-system/react').then(module => ({ default: module.DapDSComboboxReact })))
+const DapDSTextarea = lazy(async () => await import('dap-design-system/react').then(module => ({ default: module.DapDSTextareaReact })))
+const DapDSStack = lazy(async () => await import('dap-design-system/react').then(module => ({ default: module.DapDSStackReact })))
+const DapDSCheckbox = lazy(async () => await import('dap-design-system/react').then(module => ({ default: module.DapDSCheckboxReact })))
 
 const schema = zod.object({
   name: zod.string().min(1, { message: "Add meg a neved!" }),

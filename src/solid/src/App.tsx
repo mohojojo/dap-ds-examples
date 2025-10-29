@@ -1,6 +1,6 @@
-import { createStore } from 'solid-js/store';
-import './App.css'
-import { createSignal, For } from 'solid-js';
+import { createStore } from "solid-js/store"
+import "./App.css"
+import { createSignal, For } from "solid-js"
 
 declare global {
   interface Window {
@@ -9,43 +9,43 @@ declare global {
 }
 
 interface FormFields {
-  name: string;
-  prefix: string;
-  email: string;
-  birthDate: string;
-  product: string;
-  subject: string;
-  message: string;
-  consent: boolean;
+  name: string
+  prefix: string
+  email: string
+  birthDate: string
+  product: string
+  subject: string
+  message: string
+  consent: boolean
 }
 
 export type Product = {
-  id: number;
-  title: string;
-  description: string;
-  category: string;
-  price: number;
+  id: number
+  title: string
+  description: string
+  category: string
+  price: number
 }
 
 interface InputDetail {
-  value: string;
+  value: string
 }
 
 interface NestedInputDetail {
-  input: string;
+  input: string
 }
 
 interface CheckedDetail {
-  checked: boolean;
+  checked: boolean
 }
 
-type InputEvent = CustomEvent<InputDetail>;
-type NestedInputEvent = CustomEvent<NestedInputDetail>;
-type CheckedInputEvent = CustomEvent<CheckedDetail>;
+type InputEvent = CustomEvent<InputDetail>
+type NestedInputEvent = CustomEvent<NestedInputDetail>
+type CheckedInputEvent = CustomEvent<CheckedDetail>
 
 function App() {
-  let timeOutId = 0;
-  const [products, setProducts] = createSignal<Product[]>([]);
+  let timeOutId = 0
+  const [products, setProducts] = createSignal<Product[]>([])
   const [form, setForm] = createStore<FormFields>({
     name: "",
     prefix: "",
@@ -55,7 +55,7 @@ function App() {
     subject: "",
     message: "",
     consent: false,
-  });
+  })
 
   const [errors, setErrors] = createStore({
     name: "",
@@ -66,45 +66,57 @@ function App() {
     subject: "",
     message: "",
     consent: "",
-  });
+  })
 
-  const getProducts = async(filter: string) => {
-    const response = await fetch(`https://dummyjson.com/products/search?q=${filter}`);
-    const json = await response.json();
-    return json.products.filter((item: any) => item.title.toLowerCase().startsWith(filter.toLowerCase()));
+  const getProducts = async (filter: string) => {
+    const response = await fetch(
+      `https://dummyjson.com/products/search?q=${filter}`
+    )
+    const json = await response.json()
+    return json.products.filter((item: any) =>
+      item.title.toLowerCase().startsWith(filter.toLowerCase())
+    )
   }
 
   const onSubmit = (e: Event) => {
-    e.preventDefault();
+    e.preventDefault()
     if (window.showDapSnackbar) {
-      window.showDapSnackbar('Gratulálunk! Minden mező helyes!', {
+      window.showDapSnackbar("Gratulálunk! Minden mező helyes!", {
         duration: 4500,
-        alertType: 'successful',
+        alertType: "successful",
         actions: [
-          { href: 'https://sg.hu', text: 'SG' },
-          { href: 'https://index.hu', text: 'Index' },
+          { href: "https://sg.hu", text: "SG" },
+          { href: "https://index.hu", text: "Index" },
         ],
       })
     }
   }
 
-  const getFormFieldValue = (field: keyof FormFields): string | boolean=> form[field];
-  const updateErrorField = (field: keyof FormFields, value: string) => setErrors({ [field]: value });
+  const getFormFieldValue = (field: keyof FormFields): string | boolean =>
+    form[field]
+  const updateErrorField = (field: keyof FormFields, value: string) =>
+    setErrors({ [field]: value })
 
   const validateRequired = (field: keyof FormFields, message: string): void => {
     if (!getFormFieldValue(field)) {
       updateErrorField(field, message)
     } else {
-      updateErrorField(field, '')
+      updateErrorField(field, "")
     }
   }
 
-  const validateEmailPattern = (field: keyof FormFields, message: string): void => {
-    const fieldValue = getFormFieldValue(field);
-    if (typeof fieldValue === 'string' && !fieldValue.match(/[^@\s]+@[^@\s]+\.[^@\s]+/)) {
-      updateErrorField(field, message);
+  const validateEmailPattern = (
+    field: keyof FormFields,
+    message: string
+  ): void => {
+    const fieldValue = getFormFieldValue(field)
+    if (
+      typeof fieldValue === "string" &&
+      !fieldValue.match(/[^@\s]+@[^@\s]+\.[^@\s]+/)
+    ) {
+      updateErrorField(field, message)
     } else {
-      updateErrorField(field, '');
+      updateErrorField(field, "")
     }
   }
 
@@ -122,26 +134,23 @@ function App() {
               value={form.name}
               feedback={errors?.name?.toString()}
               on:dds-change={(e: InputEvent) => {
-                const nameValue = e.detail.value;
-                setForm({name: nameValue});
-                validateRequired('name', 'Add meg a teljes neved!');
+                const nameValue = e.detail.value
+                setForm({ name: nameValue })
+                validateRequired("name", "Add meg a teljes neved!")
               }}
-            >
-            </dap-ds-input>
+            ></dap-ds-input>
             <dap-ds-select
               id="prefix"
               label="Megnevezés"
               name="prefix"
-              on:dds-change={
-                (e: InputEvent) => {
-                  const selectValue = e.detail.value;
-                  setForm({prefix: selectValue});
-                }
-              }
-              >
-                <dap-ds-option-item value="mr">Úr</dap-ds-option-item>
-                <dap-ds-option-item value="mrs">Hölgy</dap-ds-option-item>
-                <dap-ds-option-item value="miss">Kisasszony</dap-ds-option-item>
+              on:dds-change={(e: InputEvent) => {
+                const selectValue = e.detail.value
+                setForm({ prefix: selectValue })
+              }}
+            >
+              <dap-ds-option-item value="mr">Úr</dap-ds-option-item>
+              <dap-ds-option-item value="mrs">Hölgy</dap-ds-option-item>
+              <dap-ds-option-item value="miss">Kisasszony</dap-ds-option-item>
             </dap-ds-select>
             <dap-ds-input
               id="email"
@@ -151,9 +160,12 @@ function App() {
               feedbackType="negative"
               feedback={errors?.email?.toString()}
               on:dds-change={(e: InputEvent) => {
-                const emailValue = e.detail.value;
-                setForm({email: emailValue});
-                validateEmailPattern('email', 'Az e-mail cím formátuma helytelen vagy üres!');
+                const emailValue = e.detail.value
+                setForm({ email: emailValue })
+                validateEmailPattern(
+                  "email",
+                  "Az e-mail cím formátuma helytelen vagy üres!"
+                )
               }}
             ></dap-ds-input>
             <dap-ds-datepicker
@@ -164,12 +176,11 @@ function App() {
               feedbackType="negative"
               feedback={errors?.birthDate?.toString()}
               on:dds-change={(e: InputEvent) => {
-                const birthDateValue = e.detail.value;
-                setForm({birthDate: birthDateValue});
-                validateRequired('birthDate', 'Add meg a születési dátumod!');
+                const birthDateValue = e.detail.value
+                setForm({ birthDate: birthDateValue })
+                validateRequired("birthDate", "Add meg a születési dátumod!")
               }}
-              >
-            </dap-ds-datepicker>
+            ></dap-ds-datepicker>
             <dap-ds-combobox
               id="product"
               label="Kedvenc terméked"
@@ -177,33 +188,36 @@ function App() {
               value={form.product}
               feedbackType="negative"
               on:dds-change={(e: InputEvent) => {
-                const productValue = e.detail.value;
-                setForm({product: productValue})
+                const productValue = e.detail.value
+                setForm({ product: productValue })
               }}
-              on:dds-input={
-                (e: NestedInputEvent) => {
-                  const productFilter = e.detail.input;
-                  if (productFilter) {
-                    clearTimeout(timeOutId);
-                    timeOutId = setTimeout(() => {
-                      getProducts(productFilter)
-                        .then((products: Product[]) => {
-                          if (products) {
-                            setProducts([...products])
-                          }
-                        })
-                    }, 300);
-                  }
+              on:dds-input={(e: NestedInputEvent) => {
+                const productFilter = e.detail.input
+                if (productFilter) {
+                  clearTimeout(timeOutId)
+                  timeOutId = setTimeout(() => {
+                    getProducts(productFilter).then((products: Product[]) => {
+                      if (products) {
+                        setProducts([...products])
+                      }
+                    })
+                  }, 300)
+                }
               }}
               sync
-              placeholder="Válassz egy terméket">
-                <For each={products()}>
-                  {(item, _index) => (
-                    <dap-ds-option-item key={item.id} value={item.id as unknown as string} label={item.title}>
+              placeholder="Válassz egy terméket"
+            >
+              <For each={products()}>
+                {(item, _index) => (
+                  <dap-ds-option-item
+                    key={item.id}
+                    value={item.id as unknown as string}
+                    label={item.title}
+                  >
                     {item.title}
                   </dap-ds-option-item>
-                  )}
-                </For>
+                )}
+              </For>
             </dap-ds-combobox>
             <dap-ds-input
               id="subject"
@@ -212,8 +226,8 @@ function App() {
               value={form.subject}
               feedbackType="negative"
               on:dds-change={(e: InputEvent) => {
-                const subjectValue = e.detail.value;
-                setForm({subject: subjectValue})
+                const subjectValue = e.detail.value
+                setForm({ subject: subjectValue })
               }}
             ></dap-ds-input>
             <dap-ds-textarea
@@ -224,9 +238,9 @@ function App() {
               feedbackType="negative"
               feedback={errors?.message?.toString()}
               on:dds-change={(e: InputEvent) => {
-                const messageValue = e.detail.value;
-                setForm({message: messageValue});
-                validateRequired('message', 'Írd be az üzeneted!');
+                const messageValue = e.detail.value
+                setForm({ message: messageValue })
+                validateRequired("message", "Írd be az üzeneted!")
               }}
             ></dap-ds-textarea>
             <dap-ds-checkbox
@@ -237,16 +251,24 @@ function App() {
               checked={form.consent}
               feedback={errors?.consent?.toString()}
               on:dds-change={(e: CheckedInputEvent) => {
-                const consentValue = e.detail.checked;
-                setForm({consent: consentValue});
-                validateRequired('consent', 'Fogadd el az Adatkezelési tájékoztatót!');
-            }}
+                const consentValue = e.detail.checked
+                setForm({ consent: consentValue })
+                validateRequired(
+                  "consent",
+                  "Fogadd el az Adatkezelési tájékoztatót!"
+                )
+              }}
             ></dap-ds-checkbox>
-            <dap-ds-button onClick={(e: Event) => onSubmit(e)} htmlType="submit">Küldés</dap-ds-button>
+            <dap-ds-button
+              onClick={(e: Event) => onSubmit(e)}
+              htmlType="submit"
+            >
+              Küldés
+            </dap-ds-button>
           </dap-ds-stack>
           <div>
-              <h3>Form Data:</h3>
-              <pre>{JSON.stringify(form, null, 2)}</pre>
+            <h3>Form Data:</h3>
+            <pre>{JSON.stringify(form, null, 2)}</pre>
           </div>
         </form>
       </div>

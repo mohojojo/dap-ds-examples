@@ -7,13 +7,13 @@
 import { RemixBrowser } from "@remix-run/react";
 import { startTransition, StrictMode, useEffect } from "react";
 import { hydrateRoot } from "react-dom/client";
-import 'dap-design-system/dist/light.theme.css'
+import 'dap-design-system/styles/light.theme.css'
 
 export default function ClientApplication() {
   useEffect(() => {
     async function getComponents() {
-      await import('dap-design-system/dist/dds')
-      await import('dap-design-system/dist/react')
+      await import('dap-design-system')
+      await import('dap-design-system/react')
     }
 
     getComponents()

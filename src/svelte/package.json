@@ -30,7 +30,7 @@
 		"vite": "^6.0.0"
 	},
 	"dependencies": {
-		"dap-design-system": "^0.35.2",
+		"dap-design-system": "^0.43.1",
 		"dayjs": "^1.11.13"
 	}
 }

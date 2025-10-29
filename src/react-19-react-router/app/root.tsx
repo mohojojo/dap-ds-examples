@@ -10,14 +10,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 import type { Route } from "./+types/root"
 import "./app.css"
-import { useEffect } from "react"
+import { type ReactNode, useEffect } from "react"
 
 const queryClient = new QueryClient()
 
 function ClientApplication({ children }: { children: any }) {
   useEffect(() => {
     async function getComponents() {
-      await import("dap-design-system/dist/dds")
+      await import("dap-design-system")
     }
 
     getComponents()
@@ -39,7 +39,7 @@ export const links: Route.LinksFunction = () => [
   },
 ]
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>

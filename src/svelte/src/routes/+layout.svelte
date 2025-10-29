@@ -1,5 +1,5 @@
 <script>
-    import 'dap-design-system/dist/light.theme.css';
+    import 'dap-design-system/styles/light.theme.css';
 </script>
 
 <slot />

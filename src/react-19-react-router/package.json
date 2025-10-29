@@ -9,18 +9,18 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
-    "@react-router/node": "^7.2.0",
-    "@react-router/serve": "^7.2.0",
+    "@react-router/node": "^7.9.5",
+    "@react-router/serve": "^7.9.5",
     "@tanstack/react-query": "^5.72.0",
-    "dap-design-system": "^0.35.2",
+    "dap-design-system": "^0.43.1",
     "isbot": "^5.1.17",
     "lit-html": "^3.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^7.2.0"
+    "react-router": "^7.9.5"
   },
   "devDependencies": {
-    "@react-router/dev": "^7.2.0",
+    "@react-router/dev": "^7.9.5",
     "@tailwindcss/vite": "^4.0.0",
     "@types/node": "^20",
     "@types/react": "^19.0.1",

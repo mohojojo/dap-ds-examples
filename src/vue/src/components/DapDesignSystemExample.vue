@@ -17,6 +17,8 @@
           size="md"
         />
 
+        <dap-ds-form-label for="phone">Phone</dap-ds-form-label>
+
         <dap-ds-form-label for="date">Date</dap-ds-form-label>
         <dap-ds-date-picker
           id="date"

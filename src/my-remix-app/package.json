@@ -17,7 +17,7 @@
     "@remix-run/react": "^2.15.1",
     "@remix-run/serve": "^2.15.1",
     "@tanstack/react-query": "^5.62.7",
-    "dap-design-system": "^0.35.2",
+    "dap-design-system": "^0.43.1",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

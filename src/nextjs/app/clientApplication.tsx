@@ -9,7 +9,7 @@ export default function ClientApplication({
 }) {
   useEffect(() => {
     async function getComponents() {
-      await import('dap-design-system/dist/dds')
+      await import('dap-design-system')
     }
 
     getComponents()

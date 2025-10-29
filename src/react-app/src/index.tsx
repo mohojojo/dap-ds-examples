@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import 'dap-design-system/dist/light.theme.css'
+import 'dap-design-system/styles/light.theme.css'
 import { QueryClient, QueryClientProvider } from 'react-query';
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat' // ES 2015
 import localeData from 'dayjs/plugin/localeData'
 import LocalizedFormat from 'dayjs/plugin/localizedFormat'
-import { DapDSSnackbarReact } from 'dap-design-system/dist/react';
+import { DapDSSnackbarReact } from 'dap-design-system/react';
 
 dayjs.extend(localeData)
 dayjs.extend(LocalizedFormat)
