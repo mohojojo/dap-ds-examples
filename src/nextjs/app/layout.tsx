@@ -1,8 +1,8 @@
 
 import localFont from 'next/font/local'
 import { ReactNode, Suspense } from 'react'
-import 'dap-design-system/styles/light.theme.css'
-import 'dap-design-system/styles/dds-reset.css'
+import 'dap-design-system/dist/light.theme.css'
+import 'dap-design-system/dist/dds-reset.css'
 import ClientApplication from '@/app/clientApplication'
 import TanstackProvider from "./Providers";
 

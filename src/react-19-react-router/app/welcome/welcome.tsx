@@ -127,14 +127,17 @@ export function Welcome() {
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
       <div className="flex-1 flex flex-col min-h-0">
-        <dap-ds-button
-          variant="primary"
-          size="md"
-          onClick={() => console.log("click")}
-          onkeydown={(e) => console.log(e)}
-        >
-          Click me
-        </dap-ds-button>
+        <dap-ds-timepicker
+          id="preset-timepicker"
+          label="Meeting time"
+          description="Quick select common meeting times"
+          presets={[
+            { label: "Morning", value: "09:00" },
+            { label: "Lunch", value: "12:00" },
+            { label: "Afternoon", value: "15:00" },
+            { label: "Evening", value: "18:00" },
+          ]}
+        ></dap-ds-timepicker>
         <dap-ds-file-input
           id="fileInput1"
           description="File input description"

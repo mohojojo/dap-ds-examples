@@ -443,13 +443,99 @@ export default function Home() {
       >
         Küldés
       </button>
+      <dap-ds-file-input
+        size="xs"
+        id="fileInput"
+        accept=".pdf"
+        keepValue
+        multiple
+        maxFiles={5}
+        maxFileSize={30 * 1024 * 1024}
+        showDropzone
+        showUploadButton="false"
+        maxFileSizeErrorText="Túl nagy méretű dokumentum"
+        fileTypeErrorText="A formátum nem megfelelő"
+        ondds-file-change={(
+          e: CustomEvent<{
+            newFiles: File[]
+            files: File[]
+            canceledFiles: Set<File>
+            currentFiles: File[]
+          }>
+        ) => {
+          const files = e.detail.currentFiles
+          const canceledFiles = e.detail.canceledFiles
+          const newFiles = e.detail.newFiles
+          const existingNames = new Set(files.map((f: File) => f.name))
 
+          const uniqueFiles: File[] = []
+          const duplicates: Set<File> = new Set()
+
+          for (const file of newFiles) {
+            if (existingNames.has(file.name)) {
+              duplicates.add(file)
+            } else {
+              uniqueFiles.push(file)
+            }
+          }
+
+          canceledFiles.clear()
+          for (const file of duplicates) {
+            canceledFiles.add(file)
+          }
+
+          console.log("ondds-file-change", {
+            files,
+            canceledFiles,
+            uniqueFiles,
+          })
+
+          if (canceledFiles.size > 0) {
+            const invalidFiles = Array.from(canceledFiles).map((file) => ({
+              file,
+              message: "Egyszerre nem tölthető fel két azonos nevű fájl.",
+              type: "duplicate",
+              name: file.name,
+            }))
+
+            console.log("invalidFiles", invalidFiles)
+          }
+        }}
+      >
+        <div slot="dropzone-content">
+          <div>
+            <dap-ds-form-label
+              for="fileInput"
+              size="lg"
+              label="Válaszd ki vagy húzd ide a dokumentumokat"
+            ></dap-ds-form-label>
+            <dap-ds-typography variant="description" size="md">
+              Legfeljebb 5 darab, egyenként 30 MB méretű PDF-et
+            </dap-ds-typography>
+          </div>
+          <dap-ds-button size="lg" variant="outline">
+            <div className="button-flex-wrapper">Dokumentumok kiválasztása</div>
+          </dap-ds-button>
+        </div>
+      </dap-ds-file-input>
+      <dap-ds-file-input-list
+        for="fileInput"
+        showFileSize="false"
+        showThumbnail="true"
+        showFileLink="true"
+        fileLinkLabel="Megnézem"
+      ></dap-ds-file-input-list>
       <dap-ds-datepicker
         id="datepicker"
         label="Születési dátum"
         description="Add meg a születési dátumod!"
         name="datepicker"
-        value={dayjs()}
+        value={dayjs().add(1, "month")}
+        maxDate={dayjs().endOf("day")}
+        minDate={dayjs().subtract(1, "month")}
+        disabledDate={(date: Dayjs) => {
+          return date.isAfter(dayjs().add(5, "days"))
+        }}
         locale="hu"
         feedback={errors?.datepicker?.message?.toString()}
         feedbackType={errors?.datepicker ? "negative" : "positive"}
@@ -649,6 +735,7 @@ export default function Home() {
                 feedback={errors?.product?.message?.toString()}
                 feedbackType="negative"
                 ondds-change={(e: DdsChangeEvent) => {
+                  console.log(e.detail?.value)
                   setValue("product", e.detail?.value)
                 }}
                 ondds-input={(e: DdsInputEvent) => {
