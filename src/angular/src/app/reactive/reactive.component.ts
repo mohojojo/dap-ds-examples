@@ -15,7 +15,7 @@ import { DapDSComboboxAccessorDirective } from '../directives/dap-ds-combobox.di
 import { ProductService } from '../service/product.service'
 import { Product } from '../model/product'
 import { debounceTime } from 'rxjs'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 
 @Component({
   selector: 'app-reactive',
@@ -36,8 +36,8 @@ export class ReactiveComponent {
   isFormSubmitted = false
   myForm: FormGroup
   products: Product[] = []
-  maxDate = dayjs().endOf('day')
-  minDate = dayjs().subtract(1, 'month')
+  maxDate: Dayjs = dayjs()
+  minDate: Dayjs = dayjs().subtract(1, 'month')
 
   disabledDate = (date: any) => {
     return date.isAfter(dayjs().add(5, 'days'))
