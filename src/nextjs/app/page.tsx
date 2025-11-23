@@ -2,7 +2,7 @@
 
 import { Controller, useForm } from "react-hook-form"
 import "./globals.css"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
 import {
   DdsChangeEvent,
@@ -41,6 +41,7 @@ export type FormData = {
 
 export default function Home() {
   let timeOutId: NodeJS.Timeout | number = 0
+  const [mounted, setMounted] = useState(false)
 
   const {
     control,
@@ -53,7 +54,7 @@ export default function Home() {
       name: "",
       prefix: "",
       email: "",
-      datepicker: dayjs(),
+      datepicker: dayjs("2000-01-01"), // Use a fixed date to avoid hydration mismatch
       product: "",
       subject: "",
       message: "",
@@ -66,6 +67,12 @@ export default function Home() {
   )
 
   const [filter, setFilter] = useState("")
+
+  useEffect(() => {
+    setMounted(true)
+    // Set the actual datepicker value after mount to avoid hydration issues
+    setValue("datepicker", dayjs())
+  }, [setValue])
 
   const query = useQuery({
     queryKey: ["products", filter],
@@ -509,6 +516,7 @@ export default function Home() {
               size="lg"
               label="Válaszd ki vagy húzd ide a dokumentumokat"
             ></dap-ds-form-label>
+
             <dap-ds-typography variant="description" size="md">
               Legfeljebb 5 darab, egyenként 30 MB méretű PDF-et
             </dap-ds-typography>
@@ -525,44 +533,46 @@ export default function Home() {
         showFileLink="true"
         fileLinkLabel="Megnézem"
       ></dap-ds-file-input-list>
-      <dap-ds-datepicker
-        id="datepicker"
-        label="Születési dátum"
-        description="Add meg a születési dátumod!"
-        name="datepicker"
-        value={dayjs().add(1, "month")}
-        maxDate={dayjs().endOf("day")}
-        minDate={dayjs().subtract(1, "month")}
-        disabledDate={(date: Dayjs) => {
-          return date.isAfter(dayjs().add(5, "days"))
-        }}
-        locale="hu"
-        feedback={errors?.datepicker?.message?.toString()}
-        feedbackType={errors?.datepicker ? "negative" : "positive"}
-        ondds-change={(e: DdsChangeEvent) => {
-          setValue("datepicker", e.detail.value, {
-            shouldValidate: true,
-          })
-        }}
-        ondds-invaliddate={(e: DdsInvalidDateEvent) => {
-          if (e.detail.type === "invalid") {
-            setError("datepicker", {
-              message: `Érvénytelen dátum: ${
-                dayjs.Ls[dayjs.locale()].formats.L
-              }`,
+      {mounted && (
+        <dap-ds-datepicker
+          id="datepicker"
+          label="Születési dátum"
+          description="Add meg a születési dátumod!"
+          name="datepicker"
+          value={dayjs().add(1, "month")}
+          maxDate={dayjs().endOf("day")}
+          minDate={dayjs().subtract(1, "month")}
+          disabledDate={(date: Dayjs) => {
+            return date.isAfter(dayjs().add(5, "days"))
+          }}
+          locale="hu"
+          feedback={errors?.datepicker?.message?.toString()}
+          feedbackType={errors?.datepicker ? "negative" : "positive"}
+          ondds-change={(e: DdsChangeEvent) => {
+            setValue("datepicker", e.detail.value, {
+              shouldValidate: true,
             })
-          }
+          }}
+          ondds-invaliddate={(e: DdsInvalidDateEvent) => {
+            if (e.detail.type === "invalid") {
+              setError("datepicker", {
+                message: `Érvénytelen dátum: ${
+                  dayjs.Ls[dayjs.locale()].formats.L
+                }`,
+              })
+            }
 
-          if (e.detail.type === "out-of-range") {
-            setError("datepicker", {
-              message: "Nem választható dátum!",
-            })
-          }
-        }}
-        ondds-validdate={() => {
-          setError("datepicker", { message: "" })
-        }}
-      ></dap-ds-datepicker>
+            if (e.detail.type === "out-of-range") {
+              setError("datepicker", {
+                message: "Nem választható dátum!",
+              })
+            }
+          }}
+          ondds-validdate={() => {
+            setError("datepicker", { message: "" })
+          }}
+        ></dap-ds-datepicker>
+      )}
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <dap-ds-stack>
           <dap-ds-combobox
@@ -631,6 +641,7 @@ export default function Home() {
                 feedback={errors?.prefix?.message?.toString()}
                 feedbackType="negative"
                 ondds-change={(e: DdsChangeEvent) => {
+                  console.log(e.detail.value)
                   setValue("prefix", e.detail.value)
                 }}
               >
