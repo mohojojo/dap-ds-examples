@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:dap.gov.hu)",
+      "WebFetch(domain:services.gov.hu)",
+      "Bash(ls:*)",
+      "Bash(npm install:*)",
+      "Bash(npx next build:*)"
+    ]
+  }
+}

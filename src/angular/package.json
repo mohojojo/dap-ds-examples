@@ -19,7 +19,7 @@
     "@angular/platform-browser": "^19.0.0",
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
-    "dap-design-system": "^0.44.5",
+    "dap-design-system": "^0.53.0",
     "dayjs": "^1.11.19",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

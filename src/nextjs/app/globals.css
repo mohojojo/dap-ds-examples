@@ -1,22 +1,127 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  
-  color-scheme: light dark;
-  
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --background: #ffffff;
-  --foreground: #171717;
+  --dds-containers-xlarge: 1140px;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  max-width: 500px;
+  background-color: var(--dds-background-brand-subtle);
+}
+
+/* Ensure main content is full width so section containers can center */
+#main-content {
+  width: 100%;
+}
+
+/* Default margins for dap-ds-typography header variants (design system does not provide them) */
+dap-ds-typography[variant="h1"] {
+  display: block;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+}
+dap-ds-typography[variant="h2"] {
+  display: block;
+  margin-block-start: 2em;
+  margin-block-end: 2em;
+}
+dap-ds-typography[variant="h3"] {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 0.5em;
+}
+dap-ds-typography[variant="h4"] {
+  display: block;
+  margin-block-start: 1.33em;
+  margin-block-end: 0.5em;
+}
+dap-ds-typography[variant="h5"] {
+  display: block;
+  margin-block-start: 1.67em;
+  margin-block-end: 0.5em;
+}
+dap-ds-typography[variant="h6"] {
+  display: block;
+  margin-block-start: 2em;
+  margin-block-end: 0.5em;
+}
+
+dap-ds-modal::part(base) {
+  width: 500px;
+}
+
+.hero-section {
+  background: linear-gradient(
+    135deg,
+    var(--dds-background-brand-strong-inverted, #3730a3) 0%,
+    var(--dds-background-brand-base-inverted, #4f46e5) 100%
+  );
+}
+
+.footer-section {
+  --dds-text-color: var(--dds-text-neutral-inverted, #f3f4f6);
+  color: var(--dds-text-neutral-inverted, #f3f4f6);
+  background: linear-gradient(
+    135deg,
+    var(--dds-background-brand-strong-inverted, #3730a3) 0%,
+    var(--dds-background-brand-base-inverted, #4f46e5) 100%
+  );
+}
+
+.card-grid-life-events {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .card-grid-life-events {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-grid-life-events {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.card-grid-news {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .card-grid-news {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.card-grid-services {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .card-grid-services {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card-grid-admin {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .card-grid-admin {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

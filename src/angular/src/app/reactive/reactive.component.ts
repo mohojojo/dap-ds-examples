@@ -38,6 +38,8 @@ export class ReactiveComponent {
   products: Product[] = []
   maxDate: Dayjs = dayjs()
   minDate: Dayjs = dayjs().subtract(1, 'month')
+  datess: Dayjs = dayjs()
+  currentDate: Dayjs = dayjs().subtract(2, 'month')
 
   disabledDate = (date: any) => {
     return date.isAfter(dayjs().add(5, 'days'))

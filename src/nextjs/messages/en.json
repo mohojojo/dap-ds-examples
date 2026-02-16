@@ -1,0 +1,188 @@
+{
+  "metadata": {
+    "title": "DAP - Digital Citizenship Program",
+    "description": "Hungary's Digital Citizenship Program"
+  },
+  "skipLink": {
+    "label": "Skip to Life Events"
+  },
+  "header": {
+    "nav": {
+      "services": "Services",
+      "lifeEvents": "Life Events",
+      "forms": "Forms"
+    },
+    "login": "Log in",
+    "loginModal": "Log in (Modal)",
+    "menuOpen": "Open menu",
+    "menuTitle": "Menu",
+    "downloadApp": "Download DAPApp",
+    "loginForm": {
+      "emailLabel": "Email or username",
+      "emailDescription": "Enter your email address or username",
+      "emailPlaceholder": "Enter your email address or username",
+      "passwordLabel": "Password",
+      "passwordDescription": "Enter your password",
+      "passwordPlaceholder": "Enter your password",
+      "cancel": "Cancel"
+    },
+    "validation": {
+      "emailRequired": "Please enter your email or username",
+      "emailInvalid": "Valid email or username (min. 3 characters)",
+      "passwordRequired": "Please enter your password",
+      "passwordMinLength": "Password must be at least 6 characters long"
+    }
+  },
+  "hero": {
+    "title": "Digital Citizenship Program",
+    "subtitle": "Handle your official matters conveniently, on a single platform. Find the service you need!",
+    "searchPlaceholder": "Search among services..."
+  },
+  "lifeEvents": {
+    "title": "Life Events",
+    "birth": "Birth",
+    "education": "Education",
+    "employment": "Employment",
+    "family": "Family",
+    "health": "Healthcare",
+    "housing": "Housing",
+    "transport": "Transport",
+    "tax": "Taxation",
+    "retirement": "Retirement",
+    "bereavement": "Bereavement"
+  },
+  "services": {
+    "title": "Government Window Services",
+    "documentOffice": "Document Office",
+    "taxAdmin": "Tax Administration",
+    "socialSecurity": "Social Security",
+    "companyFormation": "Company Formation",
+    "landRegistry": "Land Registry",
+    "civilRegistry": "Civil Registry",
+    "parkingPermit": "Parking Permit",
+    "clientGate": "Client Gate+"
+  },
+  "news": {
+    "title": "Latest News",
+    "items": [
+      {
+        "title": "DAPApp Mobile Application Renewed",
+        "subtitle": "New features and improved user experience",
+        "date": "January 15, 2025",
+        "category": "Development"
+      },
+      {
+        "title": "Apply for e-ID Card Online",
+        "subtitle": "Application process can now be started from home",
+        "date": "January 10, 2025",
+        "category": "Service"
+      },
+      {
+        "title": "Digital Signature Made Easy",
+        "subtitle": "Learn more about digital signatures",
+        "date": "January 5, 2025",
+        "category": "Information"
+      }
+    ]
+  },
+  "webAdmin": {
+    "title": "Online Administration",
+    "localGov": {
+      "title": "Municipal e-Administration",
+      "description": "Handle local government matters electronically."
+    },
+    "statePortal": {
+      "title": "State Services Portal",
+      "description": "Unified interface for accessing central government services."
+    }
+  },
+  "footer": {
+    "help": {
+      "title": "Need help?",
+      "description": "Call the Government Window phone service!"
+    },
+    "services": {
+      "title": "Services",
+      "documentOffice": "Document Office",
+      "taxAdmin": "Tax Administration",
+      "socialSecurity": "Social Security",
+      "clientGate": "Client Gate+"
+    },
+    "info": {
+      "title": "Information",
+      "about": "About us",
+      "contact": "Contact",
+      "faq": "FAQ",
+      "accessibility": "Accessibility"
+    },
+    "legal": {
+      "title": "Legal Information",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Use",
+      "cookies": "Cookie Policy",
+      "imprint": "Imprint"
+    },
+    "copyright": "© 2025 Digital Citizenship Program. All rights reserved.",
+    "cookieSettings": "Cookie Settings",
+    "sitemap": "Sitemap"
+  },
+  "languageSwitcher": {
+    "label": "Language"
+  },
+  "forms": {
+    "title": "Service Request",
+    "description": "Fill out the form below to submit your request. Fields marked with an asterisk (*) are required.",
+    "personal": {
+      "title": "Personal Information",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "First Last",
+      "email": "Email address",
+      "emailPlaceholder": "example@email.com",
+      "phone": "Phone number",
+      "phonePlaceholder": "+36 30 123 4567",
+      "dateOfBirth": "Date of birth"
+    },
+    "service": {
+      "title": "Service Details",
+      "serviceType": "Service type",
+      "serviceTypePlaceholder": "Select a service...",
+      "options": {
+        "idCard": "ID Card Application",
+        "passport": "Passport Application",
+        "drivingLicense": "Driving License Application",
+        "addressCard": "Address Card Application",
+        "birthCertificate": "Birth Certificate Extract"
+      },
+      "copies": "Number of copies",
+      "notes": "Notes",
+      "notesPlaceholder": "Provide additional details for your request..."
+    },
+    "preferences": {
+      "title": "Preferences",
+      "contactMethod": "Preferred contact method",
+      "contactEmail": "Email",
+      "contactPhone": "Phone",
+      "contactPost": "Post",
+      "newsletter": "Subscribe to newsletter",
+      "newsletterDescription": "Get notified about new services and changes.",
+      "termsAccept": "I accept the Privacy Policy and the Terms of Use."
+    },
+    "submit": "Submit Request",
+    "reset": "Reset",
+    "validation": {
+      "fullNameRequired": "Full name is required",
+      "fullNameMin": "Name must be at least 3 characters",
+      "emailRequired": "Email address is required",
+      "emailInvalid": "Please enter a valid email address",
+      "phoneInvalid": "Please enter a valid phone number (e.g. +36 30 123 4567)",
+      "dateOfBirthRequired": "Date of birth is required",
+      "serviceTypeRequired": "Please select a service type",
+      "copiesMin": "At least 1 copy is required",
+      "copiesMax": "Maximum 10 copies allowed",
+      "termsRequired": "You must accept the terms"
+    },
+    "snackbar": {
+      "success": "Request submitted successfully!"
+    }
+  }
+}

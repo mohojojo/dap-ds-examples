@@ -8,7 +8,7 @@ import type {
 } from "dap-design-system"
 import { html } from "lit-html"
 import { useQuery } from "@tanstack/react-query"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 type Row = {
   title: string

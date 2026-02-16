@@ -1,0 +1,188 @@
+{
+  "metadata": {
+    "title": "DAP - Digitális Állampolgárság Program",
+    "description": "Magyarország digitális állampolgársági programja"
+  },
+  "skipLink": {
+    "label": "Ugrás az Életeseményekre"
+  },
+  "header": {
+    "nav": {
+      "services": "Szolgáltatások",
+      "lifeEvents": "Életesemények",
+      "forms": "Űrlapok"
+    },
+    "login": "Belépés",
+    "loginModal": "Belépés (Modal)",
+    "menuOpen": "Menu megnyitása",
+    "menuTitle": "Menu",
+    "downloadApp": "DAPApp letöltése",
+    "loginForm": {
+      "emailLabel": "E-mail vagy felhasználónév",
+      "emailDescription": "Add meg az e-mail címed vagy felhasználóneved",
+      "emailPlaceholder": "Add meg az e-mail címed vagy felhasználóneved",
+      "passwordLabel": "Jelszó",
+      "passwordDescription": "Add meg a jelszavad",
+      "passwordPlaceholder": "Add meg a jelszavad",
+      "cancel": "Mégse"
+    },
+    "validation": {
+      "emailRequired": "Add meg az e-mail címed vagy felhasználóneved",
+      "emailInvalid": "Érvényes e-mail vagy felhasználónév (min. 3 karakter)",
+      "passwordRequired": "Add meg a jelszavad",
+      "passwordMinLength": "A jelszónak legalább 6 karakter hosszúnak kell lennie"
+    }
+  },
+  "hero": {
+    "title": "Digitális Állampolgárság Program",
+    "subtitle": "Intézze hivatalos ügyeit kényelmesen, egyetlen felületen. Keresse meg a szükséges szolgáltatást!",
+    "searchPlaceholder": "Keressen szolgáltatások között..."
+  },
+  "lifeEvents": {
+    "title": "Életesemények",
+    "birth": "Születés",
+    "education": "Oktatás",
+    "employment": "Munkavállalás",
+    "family": "Család",
+    "health": "Egészségügy",
+    "housing": "Lakás",
+    "transport": "Közlekedés",
+    "tax": "Adózás",
+    "retirement": "Nyugdíj",
+    "bereavement": "Gyász"
+  },
+  "services": {
+    "title": "Kormányablak szolgáltatások",
+    "documentOffice": "Okmányiroda",
+    "taxAdmin": "Adóigazgatás",
+    "socialSecurity": "Társadalombiztosítás",
+    "companyFormation": "Cégalapítás",
+    "landRegistry": "Földhivatal",
+    "civilRegistry": "Anyakönyv",
+    "parkingPermit": "Parkolási engedély",
+    "clientGate": "Ügyfélkapu+"
+  },
+  "news": {
+    "title": "Legfrissebb hírek",
+    "items": [
+      {
+        "title": "Megújult a DAPApp mobilalkalmazás",
+        "subtitle": "Új funkciók és jobb felhasználói élmény",
+        "date": "2025. január 15.",
+        "category": "Fejlesztés"
+      },
+      {
+        "title": "E-személyigazolvány igényelése online",
+        "subtitle": "Már otthonról is elindítható az igényelés",
+        "date": "2025. január 10.",
+        "category": "Szolgáltatás"
+      },
+      {
+        "title": "Digitális aláírás egyszerűen",
+        "subtitle": "Tudjon meg többet a digitális aláírásról",
+        "date": "2025. január 5.",
+        "category": "Tájékoztatás"
+      }
+    ]
+  },
+  "webAdmin": {
+    "title": "Webes ügyintézés",
+    "localGov": {
+      "title": "Önkormányzati e-ügyintézés",
+      "description": "Helyi önkormányzati ügyek intézése elektronikusan."
+    },
+    "statePortal": {
+      "title": "Állami szolgáltatások portálja",
+      "description": "Központi állami szolgáltatások elérésének egységes felülete."
+    }
+  },
+  "footer": {
+    "help": {
+      "title": "Segítségre van szüksége?",
+      "description": "Hívja a Kormányablak telefonos ügyfélszolgálatát!"
+    },
+    "services": {
+      "title": "Szolgáltatások",
+      "documentOffice": "Okmányiroda",
+      "taxAdmin": "Adóigazgatás",
+      "socialSecurity": "Társadalombiztosítás",
+      "clientGate": "Ügyfélkapu+"
+    },
+    "info": {
+      "title": "Információ",
+      "about": "Rólunk",
+      "contact": "Kapcsolat",
+      "faq": "GYIK",
+      "accessibility": "Akadálymentesítés"
+    },
+    "legal": {
+      "title": "Jogi információk",
+      "privacy": "Adatvédelmi tájékoztatás",
+      "terms": "Felhasználási feltételek",
+      "cookies": "Cookie szabályzat",
+      "imprint": "Impresszum"
+    },
+    "copyright": "© 2025 Digitális Állampolgárság Program. Minden jog fenntartva.",
+    "cookieSettings": "Sütibeállítások",
+    "sitemap": "Oldaltérkép"
+  },
+  "languageSwitcher": {
+    "label": "Nyelv"
+  },
+  "forms": {
+    "title": "Szolgáltatás igénylés",
+    "description": "Töltse ki az alábbi űrlapot az igénylés benyújtásához. A csillaggal (*) jelölt mezők kitöltése kötelező.",
+    "personal": {
+      "title": "Személyes adatok",
+      "fullName": "Teljes név",
+      "fullNamePlaceholder": "Vezetéknév Keresztnév",
+      "email": "E-mail cím",
+      "emailPlaceholder": "pelda@email.hu",
+      "phone": "Telefonszám",
+      "phonePlaceholder": "+36 30 123 4567",
+      "dateOfBirth": "Születési dátum"
+    },
+    "service": {
+      "title": "Szolgáltatás részletei",
+      "serviceType": "Szolgáltatás típusa",
+      "serviceTypePlaceholder": "Válasszon szolgáltatást...",
+      "options": {
+        "idCard": "Személyigazolvány igénylés",
+        "passport": "Útlevél igénylés",
+        "drivingLicense": "Jogosítvány igénylés",
+        "addressCard": "Lakcímkártya igénylés",
+        "birthCertificate": "Születési anyakönyvi kivonat"
+      },
+      "copies": "Példányszám",
+      "notes": "Megjegyzés",
+      "notesPlaceholder": "Adjon meg további részleteket az igényléséhez..."
+    },
+    "preferences": {
+      "title": "Beállítások",
+      "contactMethod": "Kapcsolatfelvétel módja",
+      "contactEmail": "E-mail",
+      "contactPhone": "Telefonon",
+      "contactPost": "Postai úton",
+      "newsletter": "Feliratkozás hírlevélre",
+      "newsletterDescription": "Értesítést kap az új szolgáltatásokról és változásokról.",
+      "termsAccept": "Elfogadom az Adatvédelmi tájékoztatóban foglaltakat és a Felhasználási feltételeket."
+    },
+    "submit": "Igénylés beküldése",
+    "reset": "Visszaállítás",
+    "validation": {
+      "fullNameRequired": "A teljes név megadása kötelező",
+      "fullNameMin": "A név legalább 3 karakter hosszú legyen",
+      "emailRequired": "Az e-mail cím megadása kötelező",
+      "emailInvalid": "Érvényes e-mail címet adjon meg",
+      "phoneInvalid": "Érvényes telefonszámot adjon meg (pl. +36 30 123 4567)",
+      "dateOfBirthRequired": "A születési dátum megadása kötelező",
+      "serviceTypeRequired": "Válasszon szolgáltatás típust",
+      "copiesMin": "Legalább 1 példány szükséges",
+      "copiesMax": "Legfeljebb 10 példány igényelhető",
+      "termsRequired": "A feltételek elfogadása kötelező"
+    },
+    "snackbar": {
+      "success": "Az igénylés sikeresen beküldve!"
+    }
+  }
+}
